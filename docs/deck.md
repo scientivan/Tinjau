@@ -102,6 +102,6 @@ BUIDL CTC 2026 Fall · Track: AI · Creditcoin CC3 Testnet + Attestcoin
 
 ## Team & links
 - Dien: builder
-- Repo: `https://github.com/scientivan/Tinjau`
+- Repo: `https://github.com/scientivan/Tinjau` · Live: `https://tinjau-ctc.vercel.app`
 - Contracts (CC3 testnet): `0x67394eC13E911ab0D3A26132BECa404F26e17a98`, `0xF801a8a01E018f3Bf9a648F4C095a53979282EEA`, `0xa27f14CD50BF334E7Fb09601cEf203745aADF569`
 - Video: `<VIDEO_URL>` · Integration summary: `ATTESTCOIN_INTEGRATION.md` · Dossier: `docs/evaluation-dossier.md`

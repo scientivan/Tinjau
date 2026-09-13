@@ -27,7 +27,7 @@ Limits: Ethereum mainnet only (Sepolia excluded by design); admitted evidence wi
 
 **Prototype demo video:** `<VIDEO_URL>` (recorded after the frontend is final; script in `docs/demo-script.md`)
 
-**Live app:** `<APP_URL>` (Vercel, after the frontend is deployed)
+**Live app:** https://tinjau-ctc.vercel.app
 
 **Contracts (Creditcoin CC3 Testnet, verified on Blockscout):** GroundedFacts `0x67394eC13E911ab0D3A26132BECa404F26e17a98` · AgentHireEscrow `0xF801a8a01E018f3Bf9a648F4C095a53979282EEA` · CoverageBounty `0xa27f14CD50BF334E7Fb09601cEf203745aADF569`
 

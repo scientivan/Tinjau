@@ -372,7 +372,7 @@ Acuan tampilan v2: `docs/legacy/screenshot-live.jpg`. Framing wajib: **biro kred
 - [Fakta] Hasil 12 Sep: **0 kegagalan kontras, 0 target <44px, 0 overflow, 0 error konsol** di kedua lebar; 4 agent termuat; cap sesuai kontrak.
 - [Fakta] Alat ukur pertamaku salah: mengabaikan kanal alpha dan menolak `rgb(0,0,0)` sebagai transparan, jadi melaporkan kegagalan palsu. Versi sekarang mengkomposisi rgba di atas latar sebenarnya.
 
-**WEB-9 · Freeze + publish Vercel** · P0 · agent (deploy produksi: izin Dien) · 30 menit · ⏳ menunggu Vercel (VCL-1) · dep: WEB-8, DEP-6, VCL-2
+**WEB-9 · Freeze + publish Vercel** · P0 · agent (deploy produksi: izin Dien) · 30 menit · ✅ live di https://tinjau-ctc.vercel.app (14 Sep 06:40, izin Dien) · dep: WEB-8, DEP-6, VCL-2
 - Detail: build dengan alamat v3; deploy produksi ke Vercel (VCL-2); screenshot baru `docs/screenshot-live.jpg`. Setelah freeze, perubahan UI hanya perbaikan bug.
 
 **WEB-10 · Tampilan laporan klaim dan attestor** · P1 · agent · 1 jam · 🔄 (jumlah attestor sudah tampil per agent; hasil pembaca klaim baru disebut sebagai angka di bagian scout, belum jadi tampilan sendiri) · dep: SRV-3 dan/atau CON-11
@@ -534,12 +534,20 @@ Acuan tampilan v2: `docs/legacy/screenshot-live.jpg`. Framing wajib: **biro kred
 
 Log scout untuk web/server: scout menulis JSON (`services/scout/plans/`, lalu `scripts/export-demo.ts` menyalin ringkasannya ke `apps/web/public/demo/` dan `apps/server` membaca file statis yang ikut ter-deploy). Tidak ada penyimpanan tulis di Vercel.
 
-**VCL-1 · Akun, proyek, dan CLI Vercel** · P0 · Dien (login) + agent · 20 menit · ⏳ · dep: SET-2
+**VCL-6 · Deploy produksi ke akun yang benar** · P0 (izin Dien 14 Sep 06:20) · agent · 40 menit · ✅
+- Live: **https://tinjau-ctc.vercel.app**, proyek `tinjau-ctc` di akun `blacknwhite03`.
+- Tiga percobaan pertama ke proyek `tinjau` milik akun `dienmsk` **ditolak Vercel**: `readyState: BLOCKED`, `readyStateReason` = "the commit author doesn't have permission to create deployments for this project", `seatBlock.blockCode` = `TEAM_ACCESS_REQUIRED`. Sebabnya email akun Vercel (`dienmsk030406@gmail.com`) berbeda dari email author commit (`dienmuhammad030406@gmail.com`), dan proyek itu terikat ke repo lain lagi (`k3cs/Tinjau`) yang melayani `tinjau.xyz` dengan produk berbeda. Menambahkan email ke akun Vercel ternyata berbayar, jadi Dien login ulang dengan akun email itu.
+- Setelan build proyek `tinjau` sempat diubah saat mencoba, lalu **dikembalikan persis seperti semula** (Next.js, root `apps/web`). Tidak ada deployment yang berhasil ke sana, jadi `tinjau.xyz` tidak berubah sama sekali.
+- Build: `pnpm --filter @tinjau/web build` dari root monorepo, output `apps/web/dist` (`vercel.json`). Nama proyek harus dibuat eksplisit karena nama folder `Tinjau` berhuruf besar dan ditolak Vercel.
+- **Deployment Protection dimatikan** (`ssoProtection: null`): menyala secara default dan membuat setiap URL membalas 302 ke halaman login Vercel, yang berarti juri tidak bisa membukanya.
+- Diuji di browser sungguhan: 6 rute memuat, 25 agent terbaca dari chain, tab Agents/Bounties berisi angka, nomor blok live di navbar. Error konsol hanya CORS dari host registrasi agent, yang memang sudah ditangani dengan kalimat jujur di kartunya.
+
+**VCL-1 · Akun, proyek, dan CLI Vercel** · P0 · Dien (login) + agent · 20 menit · ✅ (14 Sep; Dien login sebagai `blacknwhite03`, proyek `tinjau-ctc`) · dep: SET-2
 - Status 11 Sep: **ditunda oleh Dien** ("vercelnya nanti saja"). CLI `vercel` belum terpasang di mesin (`command not found`); pasang saat VCL-1 dimulai (`npm i -g vercel`), lalu Dien menjalankan `vercel login`.
 - Detail: Dien login `vercel` CLI (agent tidak memasukkan kredensial). Buat tiga proyek (web, server, mcp) dengan root directory monorepo masing-masing; pnpm workspace terdeteksi.
 - Kriteria selesai: `vercel link` untuk ketiganya.
 
-**VCL-2 · Deploy web** · P0 · agent · 20 menit · ⬜ · dep: VCL-1, WEB-8 (setelah aba-aba frontend)
+**VCL-2 · Deploy web** · P0 · agent · 20 menit · ✅ https://tinjau-ctc.vercel.app · dep: VCL-1, WEB-8
 - Detail: preview dulu, produksi setelah izin Dien; env `VITE_CC3_RPC`, `VITE_FACTS`, `VITE_ESCROW`.
 
 **VCL-3 · Deploy server** · P1 · agent · 30 menit · ⬜ · dep: VCL-1, SRV-1
@@ -548,8 +556,11 @@ Log scout untuk web/server: scout menulis JSON (`services/scout/plans/`, lalu `s
 **VCL-4 · Deploy MCP** · P1 · agent · 30 menit · ⬜ · dep: VCL-1, MCP-1
 - Detail: endpoint MCP HTTP stateless; uji dengan MCP Inspector; mode stdio lokal tetap ada.
 
-**VCL-5 · Cek batas platform** · P0 · agent · 15 menit · ⬜ · dep: VCL-1
-- Detail: baca dokumentasi Vercel terkini untuk batas durasi function, ukuran bundle, dan cron pada paket akun Dien; catat di sini. Belum diverifikasi saat tracker ditulis.
+**VCL-5 · Cek batas platform** · P0 · agent · 15 menit · ✅ (dibaca live 14 Sep dari `vercel.com/docs`) · dep: VCL-1
+- [Fakta] Dengan fluid compute: durasi function Hobby **300 detik** (default sekaligus maksimum), Pro 300 default / 800 maksimum. Memori Hobby 2 GB. Bundle 250 MB.
+- [Fakta] Cron Hobby hanya **sekali sehari** dengan presisi ±59 menit; Pro sekali per menit. Karena itu scout tetap di mesin Dien (launchd tiap 3 jam), bukan di Vercel.
+- [Fakta] Latensi rute server yang diukur 14 Sep: `/facts` 0,28 dtk, `/quote` 0,28 dtk, `/agents/:id/reviewers` 0,56 dtk, `/card` 6,1 dtk dingin, `/claims?max=8` 46,6 dtk. Semua muat di 300 detik.
+- [Fakta] Filesystem function tidak bisa ditulis secara andal; Vercel mengarahkan ke object storage. Ini alasan `services/scout` tidak bisa serverless: `verify` membaca ulang seluruh arsip `services/scout/plans/`.
 
 ---
 
@@ -591,6 +602,7 @@ Referensi v2 (**tidak boleh dipakai di materi publik v3**): lihat `docs/legacy/A
 
 | Waktu (WIB) | Task | Perubahan | Oleh |
 |---|---|---|---|
+| 14 Sep 06:40 | VCL-1/2/5/6, WEB-9 | Frontend live di https://tinjau-ctc.vercel.app. Deploy ke proyek lama ditolak Vercel (`TEAM_ACCESS_REQUIRED`: email akun ≠ email author commit), jadi Dien login dengan akun email itu dan proyek baru `tinjau-ctc` dibuat. Deployment Protection dimatikan supaya juri bisa membuka. `tinjau.xyz` dan produk di sana tidak tersentuh | Claude |
 | 14 Sep 05:50 | GH-3 | Rumah repo pindah ke `scientivan/Tinjau` (riwayat identik sampai SHA, fast-forward, bukan fork); URL diperbarui di 8 berkas dan `deck.pdf` diregenerasi. Catatan: token `gh` berlabel `dienmsk` sebenarnya login `k3cs`, dan semua commit memang sudah tertaut ke akun `scientivan` | Claude |
 | 14 Sep 03:40 | WEB-22 | Bounty jadi tab marketplace (`#/bounties` membuka tab, jumlahnya tampil di tab), compare dicabut dari navbar dan diganti tombol Compare per kartu + tray pilihan di kaki jendela (portal ke body, karena transform `.route` menangkap `position: fixed`) | Claude |
 | 14 Sep 02:40 | WEB-21 | Skeleton di marketplace dan compare (bentuk halaman 7,2 dtk → 0,3 dtk), rute prosa tidak lagi membaca chain, proxy dokumen registrasi `/card/:agentId`, state kosong/gagal bergambar, preamble dipadatkan, compare 3–4 kolom menggulir di bingkainya, bundle dipecah (258 → 35 kB gzip kode aplikasi). Hire, fund dan claim akhirnya dijalankan dari browser sungguhan (4/4 lulus) dan menemukan bug `fetch` tak terikat di `ProverClient` yang membuat klaim dari browser mustahil | Claude |

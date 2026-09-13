@@ -213,7 +213,13 @@ jalannya). Harus lulus 4/4.
 
 ## 9. Hosting
 
-Semua serverless di Vercel (DEC-D): web statis, server dan MCP sebagai Functions. Scout tidak di-host (memegang kunci, menunggu atestasi); dijadwalkan launchd di mesin Dien (`~/Library/LaunchAgents/com.tinjau.scout.plist`, `StartInterval` 10800). Status: **ditunda Dien**; CLI `vercel` belum terpasang.
+Web statis **sudah live**: https://tinjau-ctc.vercel.app (proyek `tinjau-ctc`, akun Vercel `blacknwhite03`, deploy 14 Sep). Build dari root monorepo lewat `vercel.json`: `pnpm --filter @tinjau/web build` → `apps/web/dist`. Deployment Protection dimatikan supaya halaman bisa dibuka tanpa login.
+
+Server dan MCP belum di-deploy. Scout tidak di-host sama sekali: ia memegang kunci dan `verify` membaca ulang seluruh arsip `services/scout/plans/`, sedangkan filesystem function Vercel tidak bisa ditulis secara andal. Scout dijadwalkan launchd di mesin Dien (`~/Library/LaunchAgents/com.tinjau.scout.plist`, `StartInterval` 10800).
+
+[Fakta] Batas Vercel yang berlaku (dibaca 14 Sep): durasi function Hobby 300 detik default sekaligus maksimum; cron Hobby hanya sekali sehari, jadi jadwal scout tiap 3 jam memang tidak bisa dipindah ke sana.
+
+Jangan pakai proyek Vercel bernama `tinjau` di akun `dienmsk`: itu produk lain yang melayani `tinjau.xyz`, terikat ke repo `k3cs/Tinjau`, dan menolak deploy dari author commit proyek ini (`TEAM_ACCESS_REQUIRED`).
 
 ## 10. Status dan backlog
 
@@ -248,6 +254,7 @@ On-chain → kode → dokumen ini → tracker → `ATTESTCOIN_INTEGRATION.md` �
 
 | Tanggal | Perubahan | Oleh |
 |---|---|---|
+| 2026-09-14 | v3.7: §9 ditulis ulang setelah frontend live di Vercel (URL, cara build, batas platform, kenapa scout tetap lokal, dan peringatan soal proyek `tinjau` milik produk lain) | Claude |
 | 2026-09-14 | v3.6: §8b diperbarui untuk WEB-21 (skeleton, kapan boleh bilang "tidak ada", state bergambar, rute prosa tanpa baca chain, batas proxy kartu agent) dan dirapikan dari drift WEB-15/16/19 (tema terang default, daftar rute, aturan motion); §8 menambah `GET /card/:agentId`; blok verifikasi menambah `wallet-browser-test.mjs` | Claude |
 | 2026-09-13 | v3.5: §8b ditulis ulang untuk WEB-14 (dunia visual Veritas + aksen Tinjau, status = warna+ikon+label, uang sebagai uang, rute hash, audit kontras nyata) | Claude |
 | 2026-09-13 | v3.4: DEC-F (b) kontrak 12 Sep + migrasi 33 tx, DEC-G launchd, angka §4 diperbarui, Sepolia dikeluarkan by design | Claude |
