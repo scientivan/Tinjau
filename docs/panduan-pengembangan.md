@@ -24,7 +24,7 @@ Label klaim: **[Fakta]** ada sumber (hash tx, `path:baris`, URL, output perintah
 | Satu kalimat | Fakta tentang agent ERC-8004 dan pengulasnya, dibuktikan dari Ethereum ke Creditcoin lewat Attestcoin; dilaporkan sebagai bukti teradmit + celah yang diketahui, bukan skor, bukan sejarah lengkap |
 | Hackathon | BUIDL CTC 2026 Fall, track AI; deadline **14 Sep 2026 10:59 WIB**; pengumuman 20 Sep |
 | Folder | `CTC Hackathon/Tinjau/` (monorepo pnpm); repo v2 diarsipkan di `~/.Trash/grounded-reputation-v2-2026-09-11` |
-| Remote | `https://github.com/k3cs/TinjauAI` (akan ditimpa lewat force-push, GH-2, izin Dien) |
+| Remote | `https://github.com/scientivan/Tinjau` (repo resmi sejak 14 Sep; `k3cs/TinjauAI` adalah rumah lama, riwayatnya identik) |
 | Kontrak v3 | CC3 Testnet, deploy **12 Sep 21:54 WIB** (menggantikan 11 Sep; DEC-F), terverifikasi (§4.1) |
 | Status 11 Sep 23:50 | Kontrak, core, scout, server, MCP, dokumen publik selesai; urutan live selesai. **Frontend menunggu aba-aba Dien.** Vercel ditunda. Video setelah frontend. Submit oleh Dien |
 

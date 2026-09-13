@@ -3,7 +3,7 @@ import { Check, Copy, ExternalLink } from "lucide-react";
 import { CC3_TESTNET, DEPLOYMENT } from "../lib/chain";
 import { href } from "../lib/router";
 
-const REPO = "https://github.com/k3cs/TinjauAI";
+const REPO = "https://github.com/scientivan/Tinjau";
 
 /**
  * For the reader who wants to call Tinjau rather than browse it. An agent asks the MCP server, a
@@ -42,7 +42,7 @@ export default function DevPage() {
 
           <h3 className="dev-sub">Run it over stdio</h3>
           <Snippet
-            code={`git clone ${REPO} && cd TinjauAI
+            code={`git clone ${REPO} && cd Tinjau
 pnpm install
 cd apps/mcp-server && pnpm stdio`}
           />
@@ -54,7 +54,7 @@ cd apps/mcp-server && pnpm stdio`}
   "mcpServers": {
     "tinjau": {
       "command": "pnpm",
-      "args": ["--dir", "/path/to/TinjauAI/apps/mcp-server", "stdio"],
+      "args": ["--dir", "/path/to/Tinjau/apps/mcp-server", "stdio"],
       "env": { "CC3_RPC": "${CC3_TESTNET.rpc}" }
     }
   }

@@ -29,7 +29,7 @@ export default function Footer() {
           <a href={href.dev}>Developers · MCP</a>
           <a href={href.faq}>Questions</a>
           <a href={href.compare([22771n, 50283n])}>Compare agents</a>
-          <a href="https://github.com/k3cs/TinjauAI" target="_blank" rel="noreferrer noopener">
+          <a href="https://github.com/scientivan/Tinjau" target="_blank" rel="noreferrer noopener">
             Source and documentation
           </a>
         </nav>

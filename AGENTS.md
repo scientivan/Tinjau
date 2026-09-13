@@ -10,7 +10,7 @@ Read first, in order:
 Hard rules:
 - No AI attribution in git or GitHub: no `Co-Authored-By` or `Claude-Session` trailers, no "Generated with Claude Code" lines, never add an agent as collaborator. Commits are authored by Dien.
 - Never commit `.env`, private keys, or personal data. Never submit to DoraHacks.
-- Never push (including the planned force-push to `k3cs/TinjauAI`), deploy to Vercel production, or deploy contracts without Dien's explicit approval in that session.
+- Never push to `scientivan/Tinjau`, deploy to Vercel production, or deploy contracts without Dien's explicit approval in that session.
 - Frontend (`apps/web`, tasks WEB-*) waits for Dien's explicit go-ahead.
 - Wording rules: `minAttestors` = attestors registered at admission (never "signers behind a fact"); `coveredThrough` = newest proven relevant height (never "all blocks checked"); "admitted evidence" and "known gaps", never "complete history". Evidence Exchange: `fund`/`decisionOf`/`proveAndClaim` (pay only for a decision change, either direction) and source-order conflict resolution are live; `proveBatchAndClaim`, adjudication receipt and same-tx hire re-pricing are not built. Say exactly that, never "roadmap only" and never "fully built". When any of this changes, update every file in `../docs/list-document.md`.
 - Product invariants: `GroundedFacts` stores proven facts only. No scores or weights, no admin or upgrade path, no LLM in the fact path, every number recomputable off-chain from the same proofs, logs accepted only from the official ERC-8004 registries.

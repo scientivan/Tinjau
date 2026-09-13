@@ -21,9 +21,9 @@ Limits: Ethereum mainnet only (Sepolia excluded by design); admitted evidence wi
 
 **Attestcoin Protocol Integration Summary:** paste `ATTESTCOIN_INTEGRATION.md` (repo root).
 
-**GitHub repository:** https://github.com/k3cs/TinjauAI
+**GitHub repository:** https://github.com/scientivan/Tinjau
 
-**Project deck (PDF):** https://github.com/k3cs/TinjauAI/blob/main/docs/deck.pdf
+**Project deck (PDF):** https://github.com/scientivan/Tinjau/blob/main/docs/deck.pdf
 
 **Prototype demo video:** `<VIDEO_URL>` (recorded after the frontend is final; script in `docs/demo-script.md`)
 

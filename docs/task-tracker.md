@@ -50,7 +50,7 @@ Dilakukan karena status tracker diragukan. Setiap baris = fakta yang dicek langs
 | Codebase v2 dihapus; build ulang semuanya dari nol | Kode lama tidak disalin. Repo v2 diarsipkan di `~/.Trash/grounded-reputation-v2-2026-09-11` (masih bisa dipulihkan) |
 | Pakai struktur folder `Tinjau/` | Monorepo: `apps/web`, `apps/server`, `apps/mcp-server`, `contracts`, `packages`, `services`, `scripts`, `docs` |
 | Dokumen penting dipindah ke `Tinjau/` | Ada di `docs/legacy/` sebagai **referensi desain**, bukan kode |
-| Repo GitHub: timpa `k3cs/TinjauAI` | Riwayat lama di GitHub hilang saat force-push. Force-push hanya setelah Dien menyetujui di sesi itu (GH-2) |
+| Repo GitHub | Riwayat lama `k3cs/TinjauAI` sudah ditimpa force-push (12 Sep, izin Dien). Rumah resmi sejak 14 Sep adalah `scientivan/Tinjau`, didorong fast-forward tanpa force |
 | Kontrak ditulis ulang dan dideploy baru | Semua alamat, hash, dan angka on-chain v2 **tidak berlaku lagi** untuk materi publik. Semua proof dibuat ulang |
 | Video direkam setelah frontend final | Video (SUB-3) bergantung pada freeze frontend (WEB-9) |
 
@@ -138,8 +138,8 @@ Invariant yang tidak berubah (sumber: `docs/legacy/00-panduan-pengembangan.md` �
 - Kriteria selesai: `git status` setelah `git init` tidak menampilkan `.env`.
 
 **SET-4 · Git lokal dan remote** · P0 · agent · 10 menit · ✅ · dep: SET-3
-- Detail: `git init -b main`; set remote `origin` ke `https://github.com/k3cs/TinjauAI`; **jangan push** (lihat GH-2). Konfigurasi commit memakai identitas Dien yang sudah ada di mesin.
-- Kriteria selesai: `git remote -v` menunjuk `k3cs/TinjauAI`; belum ada push.
+- Detail: `git init -b main`; remote `origin` awalnya `https://github.com/k3cs/TinjauAI`, dipindah ke `https://github.com/scientivan/Tinjau` pada 14 Sep (GH-3). Konfigurasi commit memakai identitas Dien yang sudah ada di mesin.
+- Kriteria selesai: `git remote -v` menunjuk repo resmi; commit memakai identitas Dien.
 
 **SET-5 · Instruksi agent** · P0 · agent · 20 menit · ✅
 - Detail: isi `claude.md` (sekarang 0 byte) dan buat `AGENTS.md`: arahkan ke `docs/panduan-pengembangan.md` (DOC-1) dan tracker ini; tulis aturan keras (tanpa atribusi AI, tanpa commit `.env`, tanpa push/deploy tanpa izin, invariant produk).
@@ -488,9 +488,15 @@ Acuan tampilan v2: `docs/legacy/screenshot-live.jpg`. Framing wajib: **biro kred
 **GH-1 · Commit bertahap** · P0 · agent · berjalan · 🔄 (commit bertahap, semua atas nama Scientivan tanpa trailer) · dep: SET-4
 - Detail: commit kecil per task (`feat:`, `fix:`, `docs:`, `chore:`), tanpa atribusi AI, tanpa `.env`. Periksa `git log --format='%an %(trailers)'` sebelum push.
 
-**GH-2 · Force-push ke `k3cs/TinjauAI`** · P0 · agent · 15 menit · 🔄 push pertama sudah (12 Sep, origin/main `ef692d2`, `gh-pages` terhapus); **push kedua diperlukan**: lokal 3 commit di depan + 12 file belum di-commit (13 Sep). Izin Dien per push · dep: WEB-9, DOC-2
-- Detail: minta izin eksplisit Dien di sesi itu; `git push --force origin main` (tanpa branch `gh-pages`; hosting di Vercel). Branch `gh-pages` lama (UI v2 di k3cs.github.io/TinjauAI) masih menampilkan angka v2: **keputusan Dien 11 Sep: hapus saat GH-2** (`git push origin --delete gh-pages`). Riwayat v2 di GitHub hilang (salinan lokal ada di Trash). Setelah push: buka repo di browser, pastikan README, deck, dan tidak ada `.env`.
-- Kriteria selesai: repo publik menampilkan v3; commit hanya atas nama Dien.
+**GH-2 · Force-push ke `k3cs/TinjauAI`** · P0 · agent · 15 menit · ✅ (12 Sep, izin Dien; `gh-pages` terhapus. Push kedua 14 Sep membawa 10 commit berikutnya, fast-forward) · dep: WEB-9, DOC-2
+- Riwayat v2 di GitHub hilang saat force-push itu; salinan lokal ada di Trash. Branch `gh-pages` lama (UI v2 di k3cs.github.io/TinjauAI) sudah dihapus, hosting pindah ke Vercel.
+
+**GH-3 · Pindah rumah ke `scientivan/Tinjau`** · P0 (keputusan Dien 14 Sep 05:50) · agent · 30 menit · ✅
+- Repo resmi sekarang `https://github.com/scientivan/Tinjau`. Riwayatnya **identik sampai SHA**: git itu content-addressed, jadi mendorong `main` yang sama ke remote kedua menyalin objek yang persis sama. Tidak ada force-push; tidak ada fork (fork akan ditandai turunan repo lama).
+- Semua 27 commit sudah tertaut ke akun GitHub `scientivan`, karena email author `dienmuhammad030406@gmail.com` terdaftar di akun itu. Itu sudah berlaku bahkan di repo lama.
+- Catatan identitas: token yang di keyring `gh` berlabel `dienmsk` sebenarnya milik login `k3cs` (id 264678181); akun itu pernah ganti nama. Jadi hanya ada dua akun, bukan tiga.
+- URL repo diperbarui di 8 tempat: `docs/submission.md` (2), `docs/deck.md`, `AGENTS.md`, `DevPage.tsx` (3), `HowPage.tsx` (2), `Footer.tsx`. Direktori hasil clone ikut berubah dari `TinjauAI` jadi `Tinjau`. `deck.pdf` diregenerasi.
+- `docs/legacy/*` sengaja tidak disentuh: itu referensi v2 yang dibekukan, dan URL lama di sana memang benar secara historis.
 
 ### 5.11 SUB: Submission
 
@@ -585,6 +591,7 @@ Referensi v2 (**tidak boleh dipakai di materi publik v3**): lihat `docs/legacy/A
 
 | Waktu (WIB) | Task | Perubahan | Oleh |
 |---|---|---|---|
+| 14 Sep 05:50 | GH-3 | Rumah repo pindah ke `scientivan/Tinjau` (riwayat identik sampai SHA, fast-forward, bukan fork); URL diperbarui di 8 berkas dan `deck.pdf` diregenerasi. Catatan: token `gh` berlabel `dienmsk` sebenarnya login `k3cs`, dan semua commit memang sudah tertaut ke akun `scientivan` | Claude |
 | 14 Sep 03:40 | WEB-22 | Bounty jadi tab marketplace (`#/bounties` membuka tab, jumlahnya tampil di tab), compare dicabut dari navbar dan diganti tombol Compare per kartu + tray pilihan di kaki jendela (portal ke body, karena transform `.route` menangkap `position: fixed`) | Claude |
 | 14 Sep 02:40 | WEB-21 | Skeleton di marketplace dan compare (bentuk halaman 7,2 dtk → 0,3 dtk), rute prosa tidak lagi membaca chain, proxy dokumen registrasi `/card/:agentId`, state kosong/gagal bergambar, preamble dipadatkan, compare 3–4 kolom menggulir di bingkainya, bundle dipecah (258 → 35 kB gzip kode aplikasi). Hire, fund dan claim akhirnya dijalankan dari browser sungguhan (4/4 lulus) dan menemukan bug `fetch` tak terikat di `ProverClient` yang membuat klaim dari browser mustahil | Claude |
 | 14 Sep 01:40 | WEB-20 | Bounty digabung ke marketplace (rute lama tetap jalan), callout use case tersorot di atas marketplace, favicon mengikuti logo navbar | Claude |
@@ -607,6 +614,6 @@ Referensi v2 (**tidak boleh dipakai di materi publik v3**): lihat `docs/legacy/A
 | 11 Sep 22:55 | CON-14, DEP-1…3 | Review: 3 temuan diperbaiki (bounty free-ride, truncated, grounded butuh indeks lengkap), 41/41 tes; deploy + verifikasi 3 kontrak; `attestedTip(3)` on-chain = 25.955.150 (ChainInfo terbaca dari kontrak) | Claude |
 | 11 Sep 22:43 | CON-1…CON-12 | Kontrak v3 ditulis ulang dari nol, 38/38 tes; precompile dicek live; CON-14 self-review | Claude |
 | 11 Sep 22:50 | GH-2, VCL-1 | Dien: `gh-pages` dihapus saat force-push; Vercel ditunda | Claude |
-| 11 Sep 22:40 | SET-1…6 | node_modules sisa Sui/Luber dihapus; workspace pnpm (core, scout, server, mcp-server; `apps/web` sengaja kosong); `.gitignore` (`.env` terabaikan, dicek `git check-ignore`); `.env.example`; git init + remote `k3cs/TinjauAI` (belum push); `AGENTS.md` + `claude.md`; toolchain: forge 1.7.1, Node 24.10.0, pnpm 10.18.3, TypeScript 5.9 | Claude |
+| 11 Sep 22:40 | SET-1…6 | node_modules sisa Sui/Luber dihapus; workspace pnpm (core, scout, server, mcp-server; `apps/web` sengaja kosong); `.gitignore` (`.env` terabaikan, dicek `git check-ignore`); `.env.example`; git init + remote `k3cs/TinjauAI` (belum push; dipindah ke `scientivan/Tinjau` pada 14 Sep); `AGENTS.md` + `claude.md`; toolchain: forge 1.7.1, Node 24.10.0, pnpm 10.18.3, TypeScript 5.9 | Claude |
 | 11 Sep 22:25 | DEC-A…E | DEC-A/B/C/E disetujui; DEC-D direvisi: hosting serverless di Vercel (§5.12), scout lokal; frontend ditahan sampai aba-aba Dien | Claude |
 | 11 Sep 22:10 | - | Repo v2 diarsipkan ke Trash; `.env` (kunci deployer) disalin ke `Tinjau/.env`; dokumen v2 ke `docs/legacy/`; tracker dibuat | Claude |

@@ -53,7 +53,7 @@ export default function HowPage({ care }: { care: Care }) {
               <li>Paid only if your proofs change the decision, either direction.</li>
               <li>You cannot lie, only withhold, and the gap shows.</li>
             </ul>
-            <a className="btn btn-secondary btn-sm" href="https://github.com/k3cs/TinjauAI#run-locally" target="_blank" rel="noreferrer noopener">
+            <a className="btn btn-secondary btn-sm" href="https://github.com/scientivan/Tinjau#run-locally" target="_blank" rel="noreferrer noopener">
               Run the scout
               <ExternalLink size={13} strokeWidth={2} aria-hidden="true" />
             </a>
@@ -100,7 +100,7 @@ cast call ${DEPLOYMENT.escrow} \\
   3 22771 '(500000,2,3,5,100,2000,0,0)' --rpc-url ${CC3_TESTNET.rpc}
 
 # replay every admitted proof from chain data and compare with the contract
-git clone https://github.com/k3cs/TinjauAI && cd TinjauAI && pnpm install
+git clone https://github.com/scientivan/Tinjau && cd Tinjau && pnpm install
 pnpm --filter @tinjau/scout scout verify 22771 50283 21548`}</code>
         </pre>
       </div>
