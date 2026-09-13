@@ -15,3 +15,7 @@ apps/web/dist/
 .vitest/
 .impeccable/
 *.tmp.*
+.vercel
+.env*
+# the Vercel CLI appended `.env*` below the original negation, so restate it last
+!.env.example
