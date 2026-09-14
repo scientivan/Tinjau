@@ -5,10 +5,10 @@ const KEY = "tinjau-theme";
 
 function read(): Theme {
   const attr = document.documentElement.getAttribute("data-theme");
-  return attr === "dark" ? "dark" : "light";
+  return attr === "light" ? "light" : "dark";
 }
 
-/** Light is the committed default (index.html applies it before first paint); the toggle persists. */
+/** Dark is the committed default (index.html applies it before first paint); the toggle persists. */
 export function useTheme(): { theme: Theme; toggle: () => void } {
   const [theme, setTheme] = useState<Theme>(read);
 

@@ -12,9 +12,10 @@ on a different colour from the rest). Sections are separated by hairlines and rh
 coloured band. The colour lives in the accent, the state ramp, and faintly teal-tinted neutrals that
 keep the page from reading as grey.
 
-Light is the default because the page is read in daylight by someone deciding whether to pay. Dark is
-a composed second theme behind the toggle: a tinted ink ground, never pure black, never a mechanical
-inversion.
+Dark is the default (Dien, 14 Sep). Its ground is a tinted ink, never pure black and never a
+mechanical inversion of the light theme. Light is the composed second theme behind the toggle, and
+both are measured: at 13px the faintest text clears 4.5:1 either way. The choice is written to
+`localStorage` and applied on `<html>` before first paint, so the page never flashes the other one.
 
 ## Tokens (`src/styles/tokens.css`)
 

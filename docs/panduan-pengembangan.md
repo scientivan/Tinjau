@@ -184,7 +184,7 @@ Sumber lengkap: `apps/web/PRODUCT.md` (untuk siapa) dan `apps/web/DESIGN.md` (du
 | **Status = warna + ikon + label, tidak pernah warna saja** (`VerdictPill`: ShieldCheck / TriangleAlert / Lock). Hijau/amber/merah hanya untuk status; aksen teal hanya untuk interaksi dan identitas; nilai di baris compare tetap tinta polos | Aturan Veritas; aman buta warna; warna per-baris terbaca sebagai skor |
 | **Uang ditulis sebagai uang**: setiap fee % disertai contoh "on a 0.1 tCTC job, 0.001 tCTC goes to the owner now" (`feeExampleShort`) | Persen tidak berarti sebelum jadi uang (PRODUCT.md) |
 | **Angka basi tidak pernah tampil seolah live.** Kalau RPC gagal, halaman mengatakannya di tempat angkanya | Kejujuran adalah produknya |
-| **Terang default + toggle gelap** (keputusan Dien 13 Sep 21:00, "jangan hitam saja"); token di `src/styles/tokens.css` (netral bernuansa teal tipis, `--primary` teal, `--state-clear/weak/held`); teks sekunder `--muted`, teks terkecil `--faint` (13px ≥ 4,5:1 di kedua tema). Gelap adalah tema kedua yang dikomposisi, bukan pembalikan | Diukur `scripts/screenshot.mjs` (kontras oklch→sRGB nyata) |
+| **Gelap default + toggle terang** (keputusan Dien 14 Sep; palet berwarna tetap berlaku dari keputusan 13 Sep 21:00 "jangan hitam saja", jadi dasarnya tinta bernuansa teal, bukan hitam murni). Token di `src/styles/tokens.css` (`--primary` teal, `--state-clear/weak/held`); teks sekunder `--muted`, teks terkecil `--faint` (13px ≥ 4,5:1 di kedua tema). Terang adalah tema kedua yang dikomposisi, bukan pembalikan. Tema dipasang di `<html>` sebelum paint pertama supaya tidak berkedip | Diukur `scripts/screenshot.mjs` (kontras oklch→sRGB nyata) |
 | **Tanpa eyebrow/kicker di atas heading; tanpa grid kartu ikon+judul+teks sebagai kerangka halaman; baris pada grid bergaris untuk daftar agent** | Craft floor impeccable + register Veritas |
 | **Satu momen motion yang dikarang, sisanya disebabkan pembaca** (daftar di `apps/web/DESIGN.md` §Motion). `prefers-reduced-motion` = state akhir langsung. Tidak ada elemen berdenyut: pill dengan titik pulse dilarang (keputusan Dien 13 Sep 21:00, "terlihat AI generik") | Kontrak arah + permintaan Dien |
 | **Tanpa kunci privat di frontend.** Sewa dan bounty ditandatangani wallet pengunjung, selalu `staticCall` dulu | Keamanan; penolakan kontrak muncul sebagai kalimat |
@@ -254,6 +254,7 @@ On-chain → kode → dokumen ini → tracker → `ATTESTCOIN_INTEGRATION.md` �
 
 | Tanggal | Perubahan | Oleh |
 |---|---|---|
+| 2026-09-14 | v3.8: tema default jadi gelap (keputusan Dien); §8b baris tema ditulis ulang | Claude |
 | 2026-09-14 | v3.7: §9 ditulis ulang setelah frontend live di Vercel (URL, cara build, batas platform, kenapa scout tetap lokal, dan peringatan soal proyek `tinjau` milik produk lain) | Claude |
 | 2026-09-14 | v3.6: §8b diperbarui untuk WEB-21 (skeleton, kapan boleh bilang "tidak ada", state bergambar, rute prosa tanpa baca chain, batas proxy kartu agent) dan dirapikan dari drift WEB-15/16/19 (tema terang default, daftar rute, aturan motion); §8 menambah `GET /card/:agentId`; blok verifikasi menambah `wallet-browser-test.mjs` | Claude |
 | 2026-09-13 | v3.5: §8b ditulis ulang untuk WEB-14 (dunia visual Veritas + aksen Tinjau, status = warna+ikon+label, uang sebagai uang, rute hash, audit kontras nyata) | Claude |

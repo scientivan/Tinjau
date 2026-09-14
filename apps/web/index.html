@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,9 +17,10 @@
     />
     <script>
       // Theme before first paint: the visitor's stored choice, else dark (the committed default).
+      // Set on <html> here rather than in React, so the page never flashes the other theme.
       try {
         var t = localStorage.getItem("tinjau-theme");
-        document.documentElement.setAttribute("data-theme", t === "dark" ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark");
       } catch (e) {}
     </script>
   </head>
