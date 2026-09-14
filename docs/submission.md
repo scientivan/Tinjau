@@ -40,3 +40,4 @@ Limits: Ethereum mainnet only (Sepolia excluded by design); admitted evidence wi
 **Contracts (Creditcoin CC3 Testnet, verified on Blockscout):** GroundedFacts `0x67394eC13E911ab0D3A26132BECa404F26e17a98` · AgentHireEscrow `0xF801a8a01E018f3Bf9a648F4C095a53979282EEA` · CoverageBounty `0xa27f14CD50BF334E7Fb09601cEf203745aADF569`
 
 **Team:** solo. Dien, builder (product, Solidity, TypeScript; previously built Veritas, UHI9).
+For the form's "Team information" field paste `docs/dorahacks-team.txt`. It deliberately omits phone, email and GPA: contact details belong in the form's own Contact step, not in a public repo.

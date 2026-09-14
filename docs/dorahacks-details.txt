@@ -1,75 +1,45 @@
 ## The problem
 
-Over 19,000 AI agents are registered on ERC-8004 on Ethereum mainnet. Other
-agents hire and pay them, and nothing a contract can check says which ones
-deserve the money.
+Over 19,000 AI agents are registered on ERC-8004 on Ethereum mainnet. Other agents hire and pay them, and nothing a contract can check says which ones deserve the money.
 
-Read raw, the registry misleads. Of the last 600 reviews, **346 of 367** rated
-agents had exactly one reviewer, and a single wallet wrote **225** reviews across
-195 agents. Over 60 days, owners holding ten or more agents made **83%** of
-14,771 new registrations. The standard's answer is to aggregate off-chain and
-trust the aggregator.
+Read raw, the registry misleads. Of the last 600 reviews, **346 of 367** rated agents had exactly one reviewer, and a single wallet wrote **225** reviews across 195 agents. Over 60 days, owners holding ten or more agents made **83%** of 14,771 new registrations. The standard's answer is to aggregate off-chain and trust the aggregator.
 
 ## What Tinjau is
 
-A verified background check for an AI agent before money moves. A credit bureau
-in Creditcoin's original sense: it records, it does not lend and it does not
-judge.
+A verified background check for an AI agent before money moves. A credit bureau in Creditcoin's original sense: it records, it does not lend and it does not judge.
 
-`GroundedFacts` on Creditcoin admits data **only** through Attestcoin proofs of
-Ethereum transactions. It stores facts, never opinions: which reviews exist, how
-long a reviewer was active before reviewing, whether review indices have holes,
-whether a reviewer owns agents, how many agents share an owner, registrant, URI
-or minting transaction, and how many attestors were registered when each fact
-was admitted.
+`GroundedFacts` on Creditcoin admits data **only** through Attestcoin proofs of Ethereum transactions. It stores facts, never opinions: which reviews exist, how long a reviewer was active before reviewing, whether review indices have holes, whether a reviewer owns agents, how many agents share an owner, registrant, URI or minting transaction, and how many attestors were registered when each fact was admitted.
 
-There is no score. A consumer passes its own thresholds and gets **admitted
-evidence plus known gaps** — never a complete history — and anyone can replay
-every proof from chain data alone.
+There is no score. A consumer passes its own thresholds and gets **admitted evidence plus known gaps** — never a complete history — and anyone can replay every proof from chain data alone.
 
 ## The pieces
 
 - **GroundedFacts** — the bureau. No admin, no upgrade path, no weights.
-- **AgentHireEscrow** — prices a hire from those facts and refuses a record with
-  holes. The premium is the agent's cost of credit and goes to its owner.
-- **CoverageBounty** — pays for evidence that changes a decision, in either
-  direction. Evidence against an agent pays exactly as much as evidence for it.
-- **GroundedScout** — an autonomous agent that picks targets, proves evidence
-  both ways, claims bounties and hires. Anyone may run one.
-- **MCP server** — `tinjau_facts`, `tinjau_quote`, `tinjau_verify`, so another
-  agent can ask the bureau before it hires.
+- **AgentHireEscrow** — prices a hire from those facts and refuses a record with holes. The premium is the agent's cost of credit and goes to its owner.
+- **CoverageBounty** — pays for evidence that changes a decision, in either direction. Evidence against an agent pays exactly as much as evidence for it.
+- **GroundedScout** — an autonomous agent that picks targets, proves evidence both ways, claims bounties and hires. Anyone may run one.
+- **MCP server** — `tinjau_facts`, `tinjau_quote`, `tinjau_verify`, so another agent can ask the bureau before it hires.
 
-Anyone may submit proofs and nobody can invent one. The BlockProver precompile
-decides what is true, so a dishonest scout can only **withhold** evidence, and
-the registry's own review counter exposes that as a gap.
+Anyone may submit proofs and nobody can invent one. The BlockProver precompile decides what is true, so a dishonest scout can only **withhold** evidence, and the registry's own review counter exposes that as a gap.
 
 ## Live on Creditcoin CC3 testnet
 
-- At least **33 Ethereum mainnet transactions** admitted, reaching back to March
-  2022, and still growing.
-- Agent 22771: three reviewers, each active between 97 days and 4 years before
-  their first review, no gaps, no look-alikes → **1%** premium, hired.
-- Agent 50283: one reviewer who owns agents, a missing review index → **held**.
-  No setting opens it, because a hole is a gate and not a price.
+- At least **33 Ethereum mainnet transactions** admitted, reaching back to March 2022, and still growing.
+- Agent 22771: three reviewers, each active between 97 days and 4 years before their first review, no gaps, no look-alikes → **1%** premium, hired.
+- Agent 50283: one reviewer who owns agents, a missing review index → **held**. No setting opens it, because a hole is a gate and not a price.
 - A bounty funded, then claimed by the scout with proofs that moved the decision.
 - The same proof verified on CC3 **mainnet**: `verify = true`, 127,746 gas.
-- A Gemini-based reader checked payment claims inside review documents against
-  the prover: on one agent, **6 claimed, 0 found on the chain they name**. That
-  is a report, never a fact on chain.
+- A Gemini-based reader checked payment claims inside review documents against the prover: on one agent, **6 claimed, 0 found on the chain they name**. That is a report, never a fact on chain.
 
 49 contract tests. Every number recomputable off-chain from the same proofs.
 
 ## Limits, stated up front
 
-- Ethereum mainnet only. Sepolia is excluded by design; Base, where most ERC-8004
-  activity lives, is out of reach today.
+- Ethereum mainnet only. Sepolia is excluded by design; Base, where most ERC-8004 activity lives, is out of reach today.
 - Admitted evidence with known gaps, not a complete history.
-- The attestor count means attestors registered at admission, not the signers
-  behind a particular proof.
+- The attestor count means attestors registered at admission, not the signers behind a particular proof.
 - Attestcoin moves trust to Creditcoin's bonded attestors; it does not remove it.
-- Evidence Exchange: paying only for a decision change and source-order conflict
-  resolution are live. Batch claim, adjudication receipt and same-transaction
-  re-pricing are not built.
+- Evidence Exchange: paying only for a decision change and source-order conflict resolution are live. Batch claim, adjudication receipt and same-transaction re-pricing are not built.
 - No consumer contract on Creditcoin yet; the escrow is the worked example.
 
 ## Links

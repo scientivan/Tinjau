@@ -1,0 +1,28 @@
+Solo. Dien Muhammad Scientivan Kurniapramono — Information Engineering
+undergraduate at Universitas Gadjah Mada, Yogyakarta, and Technical Lead of the
+UGM Blockchain Club, where I run the workshop programme and mentor members in
+smart-contract architecture.
+
+Everything in this submission was written during BUIDL CTC 2026 Fall, from an
+empty repository on 11 September 2026: the three Solidity contracts and their 49
+tests, the autonomous scout, the read API, the MCP server and the front end.
+
+Why this problem found me. My earlier work keeps circling one question — how do
+you make a claim checkable by someone who was not there?
+
+- **Veritas Protocol** — a smart-contract layer for verifiable content ownership
+  and AI-plagiarism protection, built in the Uniswap Hook Incubator and a
+  two-track winner of its 9th international hookathon. Tinjau's risk-priced
+  premium reuses that pattern, without its insurance reserve.
+- **Ambang** — a research agent that runs deterministic strategies over frozen
+  market evidence and emits replayable receipts with hash chaining and Bitcoin
+  timestamping; 133 backend tests.
+- **LandProof** — immutable land-ownership records with Indonesia's land agency
+  as the regulatory intermediary; patent application under DJKI review.
+- **Movo** — x402-protected USDC payments, tracking and settlement.
+
+Tools already in hand for this build: Solidity and Foundry, TypeScript and
+Node.js, and Google Gemini — which here reads payment claims inside review
+documents and is deliberately kept outside the fact path.
+
+https://scientivan.dev · github.com/scientivan
