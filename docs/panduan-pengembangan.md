@@ -213,7 +213,7 @@ jalannya). Harus lulus 4/4.
 
 ## 9. Hosting
 
-Web statis **sudah live**: https://tinjau-ctc.vercel.app (proyek `tinjau-ctc`, akun Vercel `blacknwhite03`, deploy 14 Sep). Build dari root monorepo lewat `vercel.json`: `pnpm --filter @tinjau/web build` → `apps/web/dist`. Deployment Protection dimatikan supaya halaman bisa dibuka tanpa login.
+Web statis **sudah live**: https://tinjau.xyz (redirect 308 ke `www.tinjau.xyz`), proyek `tinjau-ctc` di akun Vercel `blacknwhite03`, deploy 14 Sep. Domain dipindah dari proyek `tinjau` milik akun `dienmsk` oleh Dien; registrar domain adalah Hostinger, nameserver `dns-parking.com`. Alias `tinjau-ctc.vercel.app` **sudah tidak ada** setelah domain kustom dipasang; URL cadangan yang masih hidup adalah `tinjau-ctc-blacknwhite03s-projects.vercel.app`. Build dari root monorepo lewat `vercel.json`: `pnpm --filter @tinjau/web build` → `apps/web/dist`. Deployment Protection dimatikan supaya halaman bisa dibuka tanpa login.
 
 Server dan MCP belum di-deploy. Scout tidak di-host sama sekali: ia memegang kunci dan `verify` membaca ulang seluruh arsip `services/scout/plans/`, sedangkan filesystem function Vercel tidak bisa ditulis secara andal. Scout dijadwalkan launchd di mesin Dien (`~/Library/LaunchAgents/com.tinjau.scout.plist`, `StartInterval` 10800).
 
