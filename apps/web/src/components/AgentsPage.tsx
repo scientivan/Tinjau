@@ -208,7 +208,11 @@ export default function AgentsPage({
               ) : (
                 <>
                   {listed.length} of {bureau.agents.length} agents
-                  {bureau.net ? ` · ${bureau.net.admitted} Ethereum transactions proven · block ${bureau.net.block.toLocaleString("en-US")}` : ""}
+                  {bureau.net ? ` · ${bureau.net.admitted} Ethereum transactions proven` : ""}
+                  {bureau.block ? ` · block ${bureau.block.toLocaleString("en-US")}` : ""}
+                  {/* Said only while it is true, and it is true for well under a second in the
+                      ordinary case. The count above is already the contract's own, read live. */}
+                  {!bureau.listSettled ? " · checking for new agents" : ""}
                 </>
               )}
             </span>

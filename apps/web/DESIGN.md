@@ -125,6 +125,14 @@ Every chain read takes seconds, so the page has to be honest about the wait with
 - **Every empty and failed state is drawn** (`illustrations/StateMarks.tsx`), from the same parts the
   interface is made of, and carries the next move inside its sentence rather than under it.
 - **No figure is ever animated on its way in from the chain.** Counters are for authored facts only.
+- **A wait is reported in stages, never as one word.** The navbar reads `connecting`, then
+  `block N`, then `block N · M proven`, because the chain head arrives in about a second and the
+  count behind it takes several more. Saying "connecting" until the last figure had loaded made a
+  page that already had prices look like a page that had failed.
+- **The only thing shipped ahead of the chain is which agents to ask about** (`data/agents.json`),
+  never what the answer is. The list gets the first cards on screen; every premium, verdict, gap and
+  bounty on them is read live from the contract. While the live scan is still confirming the list,
+  the count line says `checking for new agents` rather than presenting it as settled.
 
 ## Structure
 

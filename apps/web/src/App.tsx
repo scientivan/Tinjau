@@ -25,7 +25,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <Nav route={route} block={bureau.net?.block} />
+      <Nav route={route} block={bureau.block} admitted={bureau.net?.admitted} />
       <div className="route" key={route.name}>
       <Suspense fallback={<main className="page"><div className="shell"><p className="small muted">Loading…</p></div></main>}>
       {route.name === "home" && <Landing bureau={bureau} care={care} />}

@@ -1,0 +1,132 @@
+{
+  "generatedAt": "2026-09-14T17:54:18.428Z",
+  "chainKey": 3,
+  "scannedThrough": 5487790,
+  "agents": [
+    {
+      "agentId": "21548",
+      "reviews": 3,
+      "firstSeen": 5480426
+    },
+    {
+      "agentId": "22771",
+      "reviews": 3,
+      "firstSeen": 5480444
+    },
+    {
+      "agentId": "50283",
+      "reviews": 1,
+      "firstSeen": 5480449
+    },
+    {
+      "agentId": "50759",
+      "reviews": 1,
+      "firstSeen": 5480449
+    },
+    {
+      "agentId": "50286",
+      "reviews": 1,
+      "firstSeen": 5480466
+    },
+    {
+      "agentId": "50724",
+      "reviews": 1,
+      "firstSeen": 5480467
+    },
+    {
+      "agentId": "50773",
+      "reviews": 0,
+      "firstSeen": 5480449
+    },
+    {
+      "agentId": "50692",
+      "reviews": 0,
+      "firstSeen": 5480449
+    },
+    {
+      "agentId": "50691",
+      "reviews": 0,
+      "firstSeen": 5480450
+    },
+    {
+      "agentId": "50670",
+      "reviews": 0,
+      "firstSeen": 5480450
+    },
+    {
+      "agentId": "41885",
+      "reviews": 0,
+      "firstSeen": 5480456
+    },
+    {
+      "agentId": "41886",
+      "reviews": 0,
+      "firstSeen": 5480456
+    },
+    {
+      "agentId": "41887",
+      "reviews": 0,
+      "firstSeen": 5480456
+    },
+    {
+      "agentId": "41888",
+      "reviews": 0,
+      "firstSeen": 5480456
+    },
+    {
+      "agentId": "41889",
+      "reviews": 0,
+      "firstSeen": 5480456
+    },
+    {
+      "agentId": "41890",
+      "reviews": 0,
+      "firstSeen": 5480456
+    },
+    {
+      "agentId": "41891",
+      "reviews": 0,
+      "firstSeen": 5480456
+    },
+    {
+      "agentId": "41892",
+      "reviews": 0,
+      "firstSeen": 5480456
+    },
+    {
+      "agentId": "41893",
+      "reviews": 0,
+      "firstSeen": 5480456
+    },
+    {
+      "agentId": "41894",
+      "reviews": 0,
+      "firstSeen": 5480456
+    },
+    {
+      "agentId": "50669",
+      "reviews": 0,
+      "firstSeen": 5480466
+    },
+    {
+      "agentId": "46997",
+      "reviews": 0,
+      "firstSeen": 5480467
+    },
+    {
+      "agentId": "34011",
+      "reviews": 0,
+      "firstSeen": 5480468
+    },
+    {
+      "agentId": "46991",
+      "reviews": 0,
+      "firstSeen": 5480469
+    },
+    {
+      "agentId": "18818",
+      "reviews": 0,
+      "firstSeen": 5480469
+    }
+  ]
+}

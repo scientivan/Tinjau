@@ -31,7 +31,7 @@ Dilakukan karena status tracker diragukan. Setiap baris = fakta yang dicek langs
 | SCT-8 cron | ✅ terpasang, tiap 3 jam | `crontab -l` **kosong**, tidak ada launchd job. `cron.log`: 4 siklus jalan (12 Sep 05:00, 08:00, 11:00, 14:00 UTC), siklus terakhir 12 Sep 21:00 WIB, **tidak ada siklus sejak itu** | Klaim "scout keeps running until the deadline" di README, integration summary, dosier, submission **tidak lagi benar** sejak 12 Sep 21:00 WIB |
 | GH-2 push | ⏳ izin Dien | Sudah pernah force-push (origin/main = `ef692d2`, `gh-pages` sudah tidak ada). Lokal **3 commit di depan** (`8461f12` web, `472ed07` docs, `3add60e` CON-13) + **12 file belum di-commit** (sinkronisasi 13 Sep + `deployments.json` alamat baru) | Repo publik belum memuat frontend, CON-13, dan koreksi 13 Sep |
 | WEB-9 / VCL-1…5 | ⏳ / ⬜ | `vercel` tidak terpasang, tidak ada `.vercel/`, `docs/screenshot-live.jpg` tidak ada | benar, belum |
-| DOC-6, SUB-1…4, SUB-6 | ⬜ | `docs/demo-script.md` tidak ada; `<VIDEO_URL>`/`<APP_URL>` masih placeholder | benar, belum |
+| DOC-6, SUB-1…4, SUB-6 | ✅ / ⬜ | `docs/demo-script.md` tersedia; demo video `https://youtu.be/WECGJb4MSBo`; `<APP_URL>` masih placeholder | video selesai; app URL belum |
 | Commit author | - | 20 commit, semua `Scientivan <dienmuhammad030406@gmail.com>`, tanpa trailer | aturan atribusi terpenuhi |
 
 **DEC-F: ✅ Dien memilih (b) pada 13 Sep 18:00 WIB; dikerjakan 18:05–18:20** (fund → scout cycle 1 → 2 hire → mass registration → Gated → release → cycle 2 → migrasi 11 proof dari kontrak lama via `services/scout/src/migrate.ts`; 33 `TxAdmitted`; Sepolia sengaja tidak dimigrasi). Opsi yang ditawarkan:
@@ -388,6 +388,24 @@ Acuan tampilan v2: `docs/legacy/screenshot-live.jpg`. Framing wajib: **biro kred
 **WEB-13 · Tombol bounty di UI** · P0 (keputusan Dien 13 Sep 19:00) · agent · 1,5 jam · ✅ (`BountyPanel.tsx` + `wallet.fundBounty` dengan `staticCall` dulu; bounty terbuka dibaca `openBounties()` dan tampil di baris agent dan compare; [Diuji 14 Sep 02:30, WEB-21] transaksi `fund` dijalankan dari browser: agent 50283, 0,01 tCTC) · dep: WEB-11
 - Detail: agent yang ditahan (atau siapa pun) bisa didanai bounty dari wallet pengunjung: `CoverageBounty.fund(chainKey, agentId, minAge, minDepth, k, c, expiry)` payable memakai ambang care level yang aktif; pratinjau tanpa wallet; bounty terbuka untuk agent itu dibaca dari `bountyCount`/`bountyOf` dan ditampilkan ("0,05 tCTC menunggu bukti yang mengubah keputusan"). Penjelasan scout: siapa pun boleh menjalankannya, tanpa batasan tugas; dibayar hanya bila predikat keputusan berubah.
 
+**WEB-23 · "connecting" 13 detik dihapus: kepala chain dipisah, daftar agent dibibitkan dari snapshot** · P0 (keputusan Dien 15 Sep) · agent · 1 jam · ✅
+- **Masalahnya sebagian besar bukan kecepatan, tapi label.** `Nav.tsx` menulis "connecting" sampai `bureau.net.block` ada, dan `readNetwork()` baru di-`await` setelah 25 agent selesai dibaca. Jadi nomor blok — satu panggilan RPC — disandera di belakang antrean sepuluh detik, dan halaman yang sebenarnya sudah berisi harga terlihat seperti gagal menyambung.
+- **Tiga perubahan.** (1) `readBlock()` dipisah dari `readNetwork()` di `chain.ts`, dipanggil sendiri, dan di-set ke state begitu jadi. (2) Navbar punya tiga keadaan, bukan dua: `connecting` → `block N` → `block N · M proven`. (3) Daftar agent dibibitkan dari `apps/web/src/data/agents.json` (id + urutan saja, tanpa satu pun angka yang ditampilkan), sehingga 12 kartu pertama bisa langsung diberi harga live tanpa menunggu dua pemindaian log; pemindaian live lalu jalan dari blok snapshot ke atas (ratusan blok, bukan belasan ribu) dan mendamaikan daftarnya.
+- **Dua temuan saat mengukur.** Ethers melipat semua panggilan satu tick ke dalam satu batch JSON-RPC, jadi `eth_blockNumber` terkirim dalam request yang sama dengan dua `getLogs` besar dan tidak bisa menjawab sebelum keduanya selesai → `batchMaxCount: 1`. Dan RPC publik melayani satu origin secara antre, jadi menembakkan 50 panggilan sekaligus justru membuat yang murah menunggu yang mahal → pemindaian log ditahan sampai layar pertama diminta. Terukur: kepala chain 2,9 dtk (satu gelombang) vs 1,1 dtk (sendiri).
+- **Hasil terukur** (Chrome, build produksi, RPC CC3 publik, satu kali jalan per versi):
+
+  | Tonggak | Sebelum | Sesudah |
+  |---|---|---|
+  | navbar berhenti bilang "connecting" | 8,40 dtk | 2,30 dtk |
+  | 12 kartu pertama berharga | 6,11 dtk | 3,82 dtk |
+  | 25 agent lengkap | 7,13 dtk | 6,11 dtk |
+  | penghitung "33 proven" | 8,40 dtk | 8,66 dtk |
+
+  Penghitung `proven` sedikit lebih lambat, dan itu disengaja: pemindaian lognya sekarang mengalah pada kartu. Angka di jaringan Dien lebih tinggi (dilaporkan ~13 dtk); rasionya yang berlaku, bukan nilainya.
+- **Kejujuran dijaga.** Snapshot tidak memuat satu pun angka yang muncul di layar: hanya id agent dan urutannya. Premi, verdict, celah, dan bounty tetap dibaca live per agent dari kontrak. Selama pemindaian live belum mendarat, baris hitungan menulis "checking for new agents" (`BureauState.listSettled`), jadi halaman tidak pernah mengaku daftarnya sudah final padahal belum.
+- Snapshot diperbarui dengan `pnpm snapshot:agents` (`scripts/snapshot-agents.mjs`) lalu di-commit. Sengaja **tidak** disambung ke `build`: deploy tidak boleh gagal hanya karena RPC publik lambat.
+- Kriteria selesai: `tsc` + `pnpm build` bersih; 49 tes kontrak dan 5 tes core lulus; pengukuran sebelum/sesudah dijalankan dari Chrome sungguhan terhadap build produksi.
+
 **WEB-22 · Bounty jadi tab marketplace, compare keluar dari navbar** · P0 (keputusan Dien 14 Sep 03:10) · agent · 1,5 jam · ✅
 - **Marketplace punya dua tab** di bawah callout: "Agents" dan "Bounties", masing-masing dengan jumlahnya. Keduanya menyimpan alamatnya sendiri (`#/marketplace` dan `#/bounties`), jadi tiap tab bisa ditautkan dan tombol back bekerja di antara keduanya. Rute lama `#/bounties` sekarang membuka tab, bukan menggulir ke bawah, jadi tidak ada lagi tebakan posisi.
 - Daftar bounty naik dari `BountyBoard` ke `useOpenBounties` (`src/lib/useOpenBounties.ts`) supaya tab bisa menyebut jumlahnya sebelum papannya dibuka, dan keduanya tidak mungkin berbeda angka. Judul "Open bounties" jadi `sr-only`: tab di atasnya sudah menamainya.
@@ -471,7 +489,7 @@ Acuan tampilan v2: `docs/legacy/screenshot-live.jpg`. Framing wajib: **biro kred
 **DOC-4 · Dosier penilaian v3** · P0 · agent · 1,5 jam · ✅ (`docs/evaluation-dossier.md` v3.0, bahasa Inggris untuk juri) · dep: DOC-3
 - Detail: turunan `docs/legacy/evaluation-dossier.md` v1.5 dengan angka v3; bagian verifikasi berisi perintah yang bisa dijalankan juri.
 
-**DOC-5 · Deck** · P0 · agent · 1 jam · ✅ (11 halaman; `<VIDEO_URL>` menyusul) · dep: DOC-3
+**DOC-5 · Deck** · P0 · agent · 1 jam · ✅ (11 halaman; demo video `https://youtu.be/WECGJb4MSBo`) · dep: DOC-3
 - Detail: `docs/deck.md` (Marp) dari `docs/legacy/deck.md` dengan angka v3; build `npx -y @marp-team/marp-cli@latest docs/deck.md --pdf --allow-local-files -o docs/deck.pdf`; periksa halaman yang berubah sebagai gambar.
 
 **DOC-6 · Naskah video** · P0 · agent · 45 menit · ✅ (`docs/demo-script.md`, 13 Sep, mengikuti alur Dien; hash 12 Sep deployment; tiga bagian alur yang tidak ada di UI ditandai) · dep: WEB-9
@@ -508,10 +526,10 @@ Acuan tampilan v2: `docs/legacy/screenshot-live.jpg`. Framing wajib: **biro kred
 **SUB-3 · Rekam video ≤3 menit** · P0 · **Dien** · 1–2 jam · ⬜ · dep: SUB-2
 - Detail: 1080p, font terminal ≥16 pt, YouTube unlisted, cek di incognito.
 
-**SUB-4 · Isi `<VIDEO_URL>`** · P0 · agent · 15 menit · ✅ (14 Sep 09:45; tautan Drive dari Dien, dipasang di `docs/submission.md` dan `docs/deck.md`, deck.pdf diregenerasi dan disalin ke `apps/web/public/`) · dep: SUB-3
+**SUB-4 · Isi demo video URL** · P0 · agent · 15 menit · ✅ (15 Sep; tautan YouTube `https://youtu.be/WECGJb4MSBo` dipasang di `docs/submission.md` dan `docs/deck.md`, deck.pdf diregenerasi dan disalin ke `apps/web/public/`) · dep: SUB-3
 - Detail: di `docs/submission.md` dan `docs/deck.md`; build ulang deck; commit + push (izin Dien).
 
-**SUB-5 · Teks form** · P0 · agent · 45 menit · ✅ (284 kata; `<VIDEO_URL>`, `<APP_URL>` menyusul) · dep: DOC-3
+**SUB-5 · Teks form** · P0 · agent · 45 menit · ✅ (284 kata; demo video `https://youtu.be/WECGJb4MSBo`; `<APP_URL>` menyusul) · dep: DOC-3
 - Detail: `docs/submission.md`: nama, sektor AI, one-liner ≤140 karakter, deskripsi ≤300 kata (framing biro kredit), Integration Summary, repo, deck URL, video URL, alamat v3. Tanpa data pribadi.
 
 **SUB-6 · Submit DoraHacks** · P0 · **Dien** · 30 menit · ⬜ · dep: GH-2, SUB-4, SUB-5
@@ -602,6 +620,7 @@ Referensi v2 (**tidak boleh dipakai di materi publik v3**): lihat `docs/legacy/A
 
 | Waktu (WIB) | Task | Perubahan | Oleh |
 |---|---|---|---|
+| 15 Sep 01:05 | WEB-23 | "connecting" 13 dtk dihapus: `readBlock()` dipisah dari pemindaian log, navbar jadi tiga keadaan, daftar agent dibibitkan dari `data/agents.json` (id saja, angka tetap live) + pemindaian inkremental. Ditemukan saat mengukur: ethers mem-batch `eth_blockNumber` bersama dua `getLogs` (`batchMaxCount: 1`), dan RPC publik mengantre per origin (pemindaian log ditahan). Navbar 8,40 → 2,30 dtk; kartu pertama 6,11 → 3,82 dtk | Claude |
 | 14 Sep 07:05 | VCL-6, WEB-9 | Tema default jadi gelap dan di-deploy. Domain `tinjau.xyz` dipindah Dien ke proyek `tinjau-ctc`; apex 308 ke `www`. Alias `tinjau-ctc.vercel.app` hilang saat domain kustom dipasang, jadi semua dokumen dipindah ke `https://tinjau.xyz` | Claude |
 | 14 Sep 06:40 | VCL-1/2/5/6, WEB-9 | Frontend live di https://tinjau.xyz. Deploy ke proyek lama ditolak Vercel (`TEAM_ACCESS_REQUIRED`: email akun ≠ email author commit), jadi Dien login dengan akun email itu dan proyek baru `tinjau-ctc` dibuat. Deployment Protection dimatikan supaya juri bisa membuka. `tinjau.xyz` dan produk di sana tidak tersentuh | Claude |
 | 14 Sep 05:50 | GH-3 | Rumah repo pindah ke `scientivan/Tinjau` (riwayat identik sampai SHA, fast-forward, bukan fork); URL diperbarui di 8 berkas dan `deck.pdf` diregenerasi. Catatan: token `gh` berlabel `dienmsk` sebenarnya login `k3cs`, dan semua commit memang sudah tertaut ke akun `scientivan` | Claude |

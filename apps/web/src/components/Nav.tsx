@@ -16,7 +16,7 @@ const LINKS: { to: string; label: string; name: Route["name"] }[] = [
   { to: href.faq, label: "FAQ", name: "faq" },
 ];
 
-export default function Nav({ route, block }: { route: Route; block?: number }) {
+export default function Nav({ route, block, admitted }: { route: Route; block?: number; admitted?: number }) {
   const { theme, toggle } = useTheme();
   const Icon = theme === "dark" ? Sun : Moon;
 
@@ -36,8 +36,18 @@ export default function Nav({ route, block }: { route: Route; block?: number }) 
         </nav>
 
         <div className="nav-side">
+          {/*
+            Three states, not two. The head arrives in a fraction of a second and is on its own
+            enough to prove the chain is answering, so it is shown the moment it lands rather than
+            waiting on the scan behind the admitted count. Saying "connecting" until the last figure
+            of the page had loaded made a working page look stalled for the whole of that wait.
+          */}
           <span className="nav-live mono num" title="Read live from Creditcoin CC3 testnet">
-            {block ? `block ${block.toLocaleString("en-US")}` : "connecting"}
+            {!block
+              ? "connecting"
+              : admitted === undefined
+                ? `block ${block.toLocaleString("en-US")}`
+                : `block ${block.toLocaleString("en-US")} · ${admitted.toLocaleString("en-US")} proven`}
           </span>
           <button
             type="button"

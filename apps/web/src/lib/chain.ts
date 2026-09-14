@@ -19,30 +19,42 @@ export function readonlyBureau(): Tinjau {
   if (!bureau) {
     // import.meta.env only exists under Vite; the same module is exercised by Node probes.
     const rpc = (import.meta as { env?: Record<string, string> }).env?.VITE_CC3_RPC ?? CC3_TESTNET.rpc;
-    bureau = new Tinjau(new JsonRpcProvider(rpc, CC3_TESTNET.chainId, { staticNetwork: true }));
+    // batchMaxCount: 1 matters more than it looks. Ethers otherwise folds every call made in the
+    // same tick into one JSON-RPC batch, so the head read — a single cheap call — was posted in the
+    // same request as two multi-thousand-block log scans and could not answer until they did. One
+    // request per call lets the fast reads land first, which is the whole point of splitting them.
+    bureau = new Tinjau(new JsonRpcProvider(rpc, CC3_TESTNET.chainId, { staticNetwork: true, batchMaxCount: 1 }));
   }
   return bureau;
 }
 
 export interface NetworkStatus {
-  block: number;
   /** Highest Ethereum block Creditcoin's attestors have signed off on, per ChainInfo 0x0FD3. */
   attestedTip: bigint;
   /** Source transactions admitted so far; the scout keeps adding to this until the deadline. */
   admitted: number;
 }
 
+/**
+ * The Creditcoin head, on its own. This is one RPC call and answers in a fraction of a second, so it
+ * is never bundled with anything slower: the navbar's proof that the chain is answering must not sit
+ * behind a log scan that takes seconds. Bundling it was the whole reason the page said "connecting"
+ * for thirteen seconds while it already had everything else it needed.
+ */
+export async function readBlock(): Promise<number> {
+  return readonlyBureau().facts.runner!.provider!.getBlockNumber();
+}
+
+/** The two figures that do need a full scan, read apart from the block so neither holds the other up. */
 export async function readNetwork(): Promise<NetworkStatus> {
   const t = readonlyBureau();
-  const provider = t.facts.runner!.provider!;
-  const [block, attestedTip, events] = await Promise.all([
-    provider.getBlockNumber(),
+  const [attestedTip, events] = await Promise.all([
     t.facts.attestedTip(CHAIN_KEY) as Promise<bigint>,
     // There is no counter on the contract: the admitted set is the TxAdmitted log, which is also
     // what anyone auditing the bureau replays.
     t.facts.queryFilter(t.facts.filters.TxAdmitted(), DEPLOY_BLOCK),
   ]);
-  return { block, attestedTip, admitted: events.length };
+  return { attestedTip, admitted: events.length };
 }
 
 export const readQuote = (agentId: bigint, p: HireParams): Promise<Quote> =>
@@ -60,15 +72,22 @@ export interface AgentRow {
  * The agent list, read from the bureau itself rather than written by hand: every agent the contract
  * has ever proved emits AgentProven, and every proven review emits ReviewProven. An agent whose
  * reviews were proved before its registration still belongs on the list, so both are unioned.
+ *
+ * `from` and `seed` exist so a visitor does not pay for the same scan twice. The build commits the
+ * scan as it stood at a known block (see data/agents.json); passing that list as `seed` and the next
+ * block as `from` leaves only the blocks mined since to be read, which is a scan of hundreds of
+ * blocks rather than tens of thousands. The result is identical either way: the seed carries no
+ * figure the page displays, only which agents to ask the contract about. Every number on screen is
+ * still read live, per agent, after this returns.
  */
-export async function readAgents(limit = 40): Promise<AgentRow[]> {
+export async function readAgents(limit = 40, from = DEPLOY_BLOCK, seed: AgentRow[] = []): Promise<AgentRow[]> {
   const t = readonlyBureau();
   const [registered, reviewed] = await Promise.all([
-    t.facts.queryFilter(t.facts.filters.AgentProven(CHAIN_KEY), DEPLOY_BLOCK),
-    t.facts.queryFilter(t.facts.filters.ReviewProven(CHAIN_KEY), DEPLOY_BLOCK),
+    t.facts.queryFilter(t.facts.filters.AgentProven(CHAIN_KEY), from),
+    t.facts.queryFilter(t.facts.filters.ReviewProven(CHAIN_KEY), from),
   ]);
 
-  const rows = new Map<string, AgentRow>();
+  const rows = new Map<string, AgentRow>(seed.map((r) => [r.agentId.toString(), { ...r }]));
   const touch = (id: bigint, block: number) => {
     const key = id.toString();
     const row = rows.get(key) ?? { agentId: id, reviews: 0, firstSeen: block };

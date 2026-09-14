@@ -63,7 +63,15 @@ function Hero({ bureau, care }: { bureau: BureauState; care: Care }) {
           <motion.dl className="hero-stats" {...m(0.24)}>
             <Stat
               value={bureau.net ? bureau.net.admitted.toLocaleString("en-US") : bureau.failed ? "—" : "…"}
-              label={bureau.net ? `proven Ethereum transactions · block ${bureau.net.block.toLocaleString("en-US")}` : bureau.failed ? "Creditcoin is not answering" : "reading from Creditcoin"}
+              label={
+                bureau.net
+                  ? `proven Ethereum transactions · block ${bureau.block?.toLocaleString("en-US") ?? "—"}`
+                  : bureau.failed
+                    ? "Creditcoin is not answering"
+                    : bureau.block
+                      ? `counting · block ${bureau.block.toLocaleString("en-US")}`
+                      : "reading from Creditcoin"
+              }
             />
             <Stat value="1% – 20%" label="protection fee, from proven facts" />
             <Stat value="0" label="scores published" />
