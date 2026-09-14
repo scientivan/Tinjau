@@ -1,42 +1,27 @@
 Solo. Dien Muhammad Scientivan Kurniapramono, Information Engineering
-undergraduate at Universitas Gadjah Mada, Yogyakarta, and Technical Lead of the
-UGM Blockchain Club, where I run the workshop programme and mentor members in
-smart-contract architecture.
+undergraduate at Universitas Gadjah Mada and Technical Lead of the UGM
+Blockchain Club.
 
-Everything in this submission was written during BUIDL CTC 2026 Fall, from an
-empty repository on 11 September 2026: the three Solidity contracts and their 49
-tests, the autonomous scout, the read API, the MCP server and the front end.
+Everything here was written during BUIDL CTC 2026 Fall, from an empty repository
+on 11 September 2026: three Solidity contracts and their 49 tests, the autonomous
+scout, the read API, the MCP server and the front end.
 
-Why this problem found me. My earlier work keeps circling one question. How do
-you make a claim checkable by someone who was not there?
+My earlier work keeps circling one question. How do you make a claim checkable by
+someone who was not there?
 
-- **Veritas Protocol**: a decentralised IP and settlement layer that protects
-  creators from AI plagiarism through on-chain conditional licensing. Built as a
-  mentee in Uniswap Hook Incubator 8, then a two-track winner of the 9th
-  hookathon (Impermanent Loss & Yield Systems, Reactive Network). Tinjau's
-  risk-priced premium reuses that pattern, without its insurance reserve.
-- **VISTA** (Verified Instant Streaming Tokenized Attention): pays a viewer 40%
-  of the ad spend, but only when Proof of Attention shows they actually watched.
-  2nd place at the Monad Blitz Hackathon, Yogyakarta edition, April 2026. The
-  same rule as Tinjau's bounty: the money moves only when evidence proves
-  something, never on a claim.
-- **Ambang**: a research agent that runs deterministic strategies over frozen
-  market evidence and emits replayable receipts with hash chaining and Bitcoin
-  timestamping. Built solo for RYO-CHAN Hackathon 2026; 133 backend tests.
-- **LandProof**: immutable on-chain land-ownership records with Indonesia's land
-  agency (BPN) as the regulatory intermediary. Patent application under DJKI
+- **Veritas Protocol**: an IP and settlement layer against AI plagiarism, built
+  in Uniswap Hook Incubator 8 and a two-track winner of the 9th hookathon.
+  Tinjau's risk-priced premium reuses that pattern.
+- **VISTA**: pays a viewer 40% of the ad spend, but only when Proof of Attention
+  shows they watched. 2nd place, Monad Blitz Hackathon Yogyakarta, April 2026.
+  The same rule as the bounty contract here: money moves on evidence, never on a
+  claim.
+- **Ambang**: a research agent that emits replayable receipts over frozen market
+  evidence, with hash chaining and Bitcoin timestamping.
+- **LandProof**: immutable on-chain land-ownership records, patent under DJKI
   review.
-- **Movo**: cross-border stablecoin payments with x402-protected USDC, tracking
-  and automatic settlement.
-- **Luber**: an assistant that turns quantitative on-chain liquidity-risk signals
-  into language a non-expert can act on, which is what this front end does with
-  contract output.
 
-Also a technical workshop speaker with the Sui Foundation, covering Move, ZK
-Login and a milestone-based escrow.
+Solidity and Foundry, TypeScript and Node.js, and Gemini, which reads payment
+claims here and is kept outside the fact path.
 
-Tools already in hand for this build: Solidity and Foundry, TypeScript and
-Node.js, and Google Gemini, which here reads payment claims inside review
-documents and is deliberately kept outside the fact path.
-
-https://scientivan.dev · github.com/scientivan
+https://scientivan.dev
