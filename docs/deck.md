@@ -8,6 +8,7 @@ style: |
 
 # Tinjau
 **Verified background checks for AI agents: facts about agents and their reviewers, proven from Ethereum into Creditcoin**
+Before one agent pays another, check what can actually be proven about it
 BUIDL CTC 2026 Fall · Track: AI · Creditcoin CC3 Testnet + Attestcoin
 
 ---
@@ -69,6 +70,7 @@ BUIDL CTC 2026 Fall · Track: AI · Creditcoin CC3 Testnet + Attestcoin
 - **R3** skip what is admitted; prove only when the bounty covers gas
 - **R4** hire on its own thresholds, else fund a bounty
 - Live: claimed bounty #0 with the decisive batch, hired 2 agents at 1%, refused a gated one
+- **Track fit**: cryptographically verified cross-chain data in, autonomous on-chain transactions out, **no centralized oracle operator anywhere in the path**
 
 ---
 
@@ -100,8 +102,16 @@ BUIDL CTC 2026 Fall · Track: AI · Creditcoin CC3 Testnet + Attestcoin
 
 ---
 
+## What's next
+- **Ship the rest of Evidence Exchange**: batch claim, an adjudication receipt (decision before and after, predicate flipped), hire re-pricing in the same transaction
+- **A consumer contract on Creditcoin** beyond our own escrow: any marketplace, lender or agent can already read `facts()` through `IAgentFacts`
+- **More source chains** the moment Attestcoin can read them; the registry table is a constructor argument, so no rewrite
+- **Who pays**: the hirer, as a premium on the job, and it goes to the agent's owner. A clean record is worth keeping
+
+---
+
 ## Team & links
-- Dien: builder
+- Dien: solo builder. Veritas Protocol (two-track winner, 9th Uniswap Hook Incubator); Vista (2nd place, Monad Blitz)
 - Repo: `https://github.com/scientivan/Tinjau` · Live: `https://tinjau.xyz`
 - Contracts (CC3 testnet): `0x67394eC13E911ab0D3A26132BECa404F26e17a98`, `0xF801a8a01E018f3Bf9a648F4C095a53979282EEA`, `0xa27f14CD50BF334E7Fb09601cEf203745aADF569`
 - Video: `https://drive.google.com/drive/folders/13l7mJelLJGnGHOy8Uy9PkMOaBbbMRKNq?usp=drive_link` · Integration summary: `ATTESTCOIN_INTEGRATION.md` · Dossier: `docs/evaluation-dossier.md`
