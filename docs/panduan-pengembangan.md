@@ -145,7 +145,7 @@ Tiga kalimat yang harus konsisten di semua materi:
 | `apps/mcp-server` | tools `tinjau_facts`, `tinjau_quote`, `tinjau_verify`; stdio + HTTP stateless (`api/mcp.ts`) | `pnpm stdio`; uji `npx tsx test/client.ts` |
 | `apps/web` | kosong kecuali `public/demo/facts.json` (hasil `scout export`) | tunggu aba-aba |
 | `scripts/` | `deploy.sh`, `live-sequence.sh`, `fetch-fixture.sh`, `export-abi.mjs` | |
-| `docs/` | tracker, panduan ini, dosier, deck, submission, code review, legacy v2 | deck: `npx -y @marp-team/marp-cli@latest docs/deck.md --pdf --allow-local-files --no-stdin -o docs/deck.pdf` |
+| `docs/` | tracker, panduan ini, dosier, deck, submission, code review, legacy v2 | deck: `npx -y @marp-team/marp-cli@latest docs/deck.md --pdf --allow-local-files --no-stdin -o docs/deck.pdf && cp docs/deck.pdf apps/web/public/deck.pdf`. Salinan di `public/` disajikan sebagai `https://tinjau.xyz/deck.pdf` dengan content-type `application/pdf`, jadi terbuka langsung di browser; GitHub menyajikannya sebagai halaman HTML atau unduhan. Salin ulang setiap kali deck berubah |
 
 Catatan: package core diimpor lewat kondisi `development` (sumber `.ts`), jadi `tsx` dijalankan dengan `--conditions=development`; build `dist/` untuk konsumen lain.
 
