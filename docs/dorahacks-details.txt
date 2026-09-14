@@ -10,23 +10,23 @@ A verified background check for an AI agent before money moves. A credit bureau 
 
 `GroundedFacts` on Creditcoin admits data **only** through Attestcoin proofs of Ethereum transactions. It stores facts, never opinions: which reviews exist, how long a reviewer was active before reviewing, whether review indices have holes, whether a reviewer owns agents, how many agents share an owner, registrant, URI or minting transaction, and how many attestors were registered when each fact was admitted.
 
-There is no score. A consumer passes its own thresholds and gets **admitted evidence plus known gaps** — never a complete history — and anyone can replay every proof from chain data alone.
+There is no score. A consumer passes its own thresholds and gets **admitted evidence plus known gaps** (never a complete history), and anyone can replay every proof from chain data alone.
 
 ## The pieces
 
-- **GroundedFacts** — the bureau. No admin, no upgrade path, no weights.
-- **AgentHireEscrow** — prices a hire from those facts and refuses a record with holes. The premium is the agent's cost of credit and goes to its owner.
-- **CoverageBounty** — pays for evidence that changes a decision, in either direction. Evidence against an agent pays exactly as much as evidence for it.
-- **GroundedScout** — an autonomous agent that picks targets, proves evidence both ways, claims bounties and hires. Anyone may run one.
-- **MCP server** — `tinjau_facts`, `tinjau_quote`, `tinjau_verify`, so another agent can ask the bureau before it hires.
+- **GroundedFacts**: the bureau. No admin, no upgrade path, no weights.
+- **AgentHireEscrow**: prices a hire from those facts and refuses a record with holes. The premium is the agent's cost of credit and goes to its owner.
+- **CoverageBounty**: pays for evidence that changes a decision, in either direction. Evidence against an agent pays exactly as much as evidence for it.
+- **GroundedScout**: an autonomous agent that picks targets, proves evidence both ways, claims bounties and hires. Anyone may run one.
+- **MCP server**: `tinjau_facts`, `tinjau_quote`, `tinjau_verify`, so another agent can ask the bureau before it hires.
 
 Anyone may submit proofs and nobody can invent one. The BlockProver precompile decides what is true, so a dishonest scout can only **withhold** evidence, and the registry's own review counter exposes that as a gap.
 
 ## Live on Creditcoin CC3 testnet
 
 - At least **33 Ethereum mainnet transactions** admitted, reaching back to March 2022, and still growing.
-- Agent 22771: three reviewers, each active between 97 days and 4 years before their first review, no gaps, no look-alikes → **1%** premium, hired.
-- Agent 50283: one reviewer who owns agents, a missing review index → **held**. No setting opens it, because a hole is a gate and not a price.
+- Agent 22771: three reviewers, each active between 97 days and 4 years before their first review, no gaps and no look-alikes. Premium **1%**, hired.
+- Agent 50283: one reviewer who owns agents, a missing review index. **Held**. No setting opens it, because a hole is a gate and not a price.
 - A bounty funded, then claimed by the scout with proofs that moved the decision.
 - The same proof verified on CC3 **mainnet**: `verify = true`, 127,746 gas.
 - A Gemini-based reader checked payment claims inside review documents against the prover: on one agent, **6 claimed, 0 found on the chain they name**. That is a report, never a fact on chain.
