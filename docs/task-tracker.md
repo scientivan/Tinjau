@@ -508,7 +508,7 @@ Acuan tampilan v2: `docs/legacy/screenshot-live.jpg`. Framing wajib: **biro kred
 **SUB-3 · Rekam video ≤3 menit** · P0 · **Dien** · 1–2 jam · ⬜ · dep: SUB-2
 - Detail: 1080p, font terminal ≥16 pt, YouTube unlisted, cek di incognito.
 
-**SUB-4 · Isi `<VIDEO_URL>`** · P0 · agent · 15 menit · ⬜ · dep: SUB-3
+**SUB-4 · Isi `<VIDEO_URL>`** · P0 · agent · 15 menit · ✅ (14 Sep 09:45; tautan Drive dari Dien, dipasang di `docs/submission.md` dan `docs/deck.md`, deck.pdf diregenerasi dan disalin ke `apps/web/public/`) · dep: SUB-3
 - Detail: di `docs/submission.md` dan `docs/deck.md`; build ulang deck; commit + push (izin Dien).
 
 **SUB-5 · Teks form** · P0 · agent · 45 menit · ✅ (284 kata; `<VIDEO_URL>`, `<APP_URL>` menyusul) · dep: DOC-3
