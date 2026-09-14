@@ -19,6 +19,14 @@ Live on CC3 testnet: 33 Ethereum mainnet transactions admitted back to 2022 and 
 
 Limits: Ethereum mainnet only (Sepolia excluded by design); admitted evidence with known gaps, not a complete history; attestor count means registered at admission, not proof signers; no consumer contract on Creditcoin yet.
 
+**BUIDL "Details" field:** paste `docs/dorahacks-details.txt` (Markdown, ready to paste).
+
+**Vision field (≤256 chars):** 19,000+ AI agents on ERC-8004 hire and pay each other, but nothing a contract can check says which deserve trust. 346 of 367 rated agents had one reviewer; one wallet wrote 225 reviews; clone-scale owners made 83% of recent registrations.
+
+**Category:** Crypto / Web3. Sub-domains: Crypto-AI, Infra / API, Security (and DeFi if a fourth is allowed).
+
+**Infrastructure:** L1s = Creditcoin, Ethereum. L2s, appchains: none (Ethereum-side registries only). Other ecosystems = ERC-8004, Attestcoin Protocol, Model Context Protocol.
+
 **Attestcoin Protocol Integration Summary:** paste `ATTESTCOIN_INTEGRATION.md` (repo root).
 
 **GitHub repository:** https://github.com/scientivan/Tinjau
