@@ -10,16 +10,30 @@ tests, the autonomous scout, the read API, the MCP server and the front end.
 Why this problem found me. My earlier work keeps circling one question. How do
 you make a claim checkable by someone who was not there?
 
-- **Veritas Protocol**: a smart-contract layer for verifiable content ownership
-  and AI-plagiarism protection, built in the Uniswap Hook Incubator and a
-  two-track winner of its 9th international hookathon. Tinjau's risk-priced
-  premium reuses that pattern, without its insurance reserve.
+- **Veritas Protocol**: a decentralised IP and settlement layer that protects
+  creators from AI plagiarism through on-chain conditional licensing. Built as a
+  mentee in Uniswap Hook Incubator 8, then a two-track winner of the 9th
+  hookathon (Impermanent Loss & Yield Systems, Reactive Network). Tinjau's
+  risk-priced premium reuses that pattern, without its insurance reserve.
+- **VISTA** (Verified Instant Streaming Tokenized Attention): pays a viewer 40%
+  of the ad spend, but only when Proof of Attention shows they actually watched.
+  2nd place at the Monad Blitz Hackathon, Yogyakarta edition, April 2026. The
+  same rule as Tinjau's bounty: the money moves only when evidence proves
+  something, never on a claim.
 - **Ambang**: a research agent that runs deterministic strategies over frozen
   market evidence and emits replayable receipts with hash chaining and Bitcoin
-  timestamping; 133 backend tests.
-- **LandProof**: immutable land-ownership records with Indonesia's land agency
-  as the regulatory intermediary; patent application under DJKI review.
-- **Movo**: x402-protected USDC payments, tracking and settlement.
+  timestamping. Built solo for RYO-CHAN Hackathon 2026; 133 backend tests.
+- **LandProof**: immutable on-chain land-ownership records with Indonesia's land
+  agency (BPN) as the regulatory intermediary. Patent application under DJKI
+  review.
+- **Movo**: cross-border stablecoin payments with x402-protected USDC, tracking
+  and automatic settlement.
+- **Luber**: an assistant that turns quantitative on-chain liquidity-risk signals
+  into language a non-expert can act on, which is what this front end does with
+  contract output.
+
+Also a technical workshop speaker with the Sui Foundation, covering Move, ZK
+Login and a milestone-based escrow.
 
 Tools already in hand for this build: Solidity and Foundry, TypeScript and
 Node.js, and Google Gemini, which here reads payment claims inside review
