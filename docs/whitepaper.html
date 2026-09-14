@@ -1,0 +1,238 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Tinjau Whitepaper</title>
+<style>
+  @page { size: A4; margin: 18mm 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body { margin:0; font: 10pt/1.5 "Charter","Georgia",serif; color:#16191d; }
+  h1 { font-size:23pt; line-height:1.15; margin:0 0 6px; letter-spacing:-.01em; }
+  .sub { font-size:11pt; color:#39434e; margin:0 0 3px; }
+  .meta { font-size:8.6pt; color:#5d6873; margin:0; font-family:"Helvetica Neue",Arial,sans-serif; }
+  h2 { font-size:12.5pt; margin:20px 0 6px; padding-bottom:3px; border-bottom:1px solid #cdd6de;
+       font-family:"Helvetica Neue",Arial,sans-serif; letter-spacing:-.01em; break-after:avoid; }
+  h3 { font-size:10.5pt; margin:12px 0 3px; font-family:"Helvetica Neue",Arial,sans-serif; break-after:avoid; }
+  p { margin:0 0 7px; text-align:justify; hyphens:auto; }
+  ul,ol { margin:0 0 7px; padding-left:18px; }
+  li { margin:0 0 3px; }
+  code { font-family:"SF Mono",Menlo,monospace; font-size:8.8pt; background:#f0f3f6; padding:1px 3px; border-radius:3px; }
+  table { width:100%; border-collapse:collapse; margin:6px 0 9px; font-size:8.8pt;
+          font-family:"Helvetica Neue",Arial,sans-serif; break-inside:avoid; }
+  th { text-align:left; background:#eef2f5; border-bottom:1.2px solid #c2cdd6; padding:4px 7px; }
+  td { border-bottom:1px solid #dfe6ec; padding:4px 7px; vertical-align:top; }
+  .lead { font-size:10.5pt; color:#232a31; }
+  .box { border-left:3px solid #1f5f7a; background:#f4f8fa; padding:7px 11px; margin:9px 0; font-size:9.4pt; break-inside:avoid; }
+  .box b { color:#1f5f7a; }
+  .fig { font-family:"SF Mono",Menlo,monospace; font-size:8.6pt; background:#f6f8fa;
+         border:1px solid #e0e7ed; border-radius:4px; padding:8px 11px; margin:7px 0; white-space:pre; break-inside:avoid; }
+  .foot { margin-top:22px; padding-top:7px; border-top:1px solid #cdd6de; font-size:8.4pt; color:#5d6873;
+          font-family:"Helvetica Neue",Arial,sans-serif; }
+  a { color:#1f5f7a; text-decoration:none; }
+</style></head><body>
+
+<h1>Tinjau</h1>
+<p class="sub">Verified background checks for AI agents: facts about ERC-8004 agents and their reviewers,
+proven from Ethereum into Creditcoin through the Attestcoin Protocol.</p>
+<p class="meta">Whitepaper v1.0 · 14 September 2026 · Dien Muhammad Scientivan Kurniapramono ·
+BUIDL CTC 2026 Fall · <a href="https://tinjau.xyz">tinjau.xyz</a> ·
+<a href="https://github.com/scientivan/Tinjau">github.com/scientivan/Tinjau</a></p>
+
+<h2>Abstract</h2>
+<p class="lead">Over 19,000 AI agents are registered on ERC-8004 on Ethereum mainnet and already hire and pay
+each other. Nothing a contract can check says which of them deserve the money. Read raw, the registry
+misleads: most rated agents carry a single reviewer, one wallet wrote hundreds of reviews, and most recent
+registrations come from owners operating at clone scale. The standard's own answer is to aggregate off-chain
+and trust the aggregator.</p>
+<p>Tinjau is a bureau in Creditcoin's original sense. It records and it does not judge. Its Creditcoin contract
+<code>GroundedFacts</code> admits data <b>only</b> through Attestcoin proofs of Ethereum transactions, verified by the
+BlockProver precompile inside the transaction that writes them. It stores facts, never opinions, and it emits no
+score. A consumer passes its own thresholds and receives admitted evidence together with the gaps that are known
+to exist, and anyone can replay every proof from chain data alone and arrive at the same numbers.</p>
+
+<h2>1. The problem, measured</h2>
+<p>These figures were measured directly against Ethereum mainnet on 29 August 2026 by decoding registry events
+over an RPC connection. They are not estimates.</p>
+<table>
+<tr><th>Observation</th><th>Measurement</th><th>Method</th></tr>
+<tr><td>Reviewer concentration</td><td>Of the last 600 reviews: 367 agents, 106 unique reviewers; <b>346 of 367</b> agents have exactly one reviewer; one externally owned account wrote <b>225</b> reviews for 195 agents</td><td>decoded <code>NewFeedback</code> events</td></tr>
+<tr><td>Conflicted reviewers</td><td><b>16 of 105</b> reviewers own agents themselves, and wrote <b>59%</b> of all feedback</td><td>registry cross-reference</td></tr>
+<tr><td>Clone-scale registration</td><td>Last 60 days: 14,771 registrations, <b>83%</b> from owners holding ten or more agents; 8,136 agents minted inside multi-<code>Registered</code> transactions</td><td><code>eth_getLogs</code>, blocks 25,429,616 to 25,861,616</td></tr>
+<tr><td>Unverifiable payment claims</td><td><b>0 of 12</b> sampled "paid on Ethereum" claims inside review documents exist on the chain they name</td><td>prover lookup per claimed hash</td></tr>
+</table>
+<p>Independent work reaches the same conclusion from another direction: arXiv 2606.26028 finds 73.5% coordinated
+Sybil reviewers on Ethereum. A rating in this registry is therefore not evidence of anything until someone checks
+who produced it, when they first existed, and whether the agent's own owner controls them.</p>
+
+<h2>2. Why the existing answer is not enough</h2>
+<p>ERC-8004 states that aggregation will happen off-chain. In practice that means an indexer reads the registry,
+computes a reputation, and signs it. A contract that wants to act on that number must trust the indexer, its RPC
+provider, and its uptime. The trust simply moves, and it moves to a party with no bond and no penalty for being
+wrong.</p>
+<p>The obstacle is structural rather than one of effort. An EVM contract cannot read its own chain's history, and
+a contract on a different chain cannot read Ethereum at all. Any on-chain consumer is therefore forced back onto a
+signed assertion from somebody.</p>
+
+<h2>3. Design principles</h2>
+<ol>
+<li><b>Facts, not scores.</b> The contract computes no weight and issues no verdict. Value comes from refusing to judge, because the party carrying the risk is the one entitled to set the bar.</li>
+<li><b>Only proofs enter.</b> Every state change passes through <code>verify</code> on the BlockProver precompile. There is no admin, no setter, no trusted relayer and no upgrade path.</li>
+<li><b>Omission must never pay.</b> A reviewer counts as grounded only when every one of their review indices is proven, so withholding evidence can never improve an agent's standing.</li>
+<li><b>Logs only from the official registries.</b> An event is read only when its emitter matches the ERC-8004 registry configured for that source chain.</li>
+<li><b>No language model in the fact path.</b> A model reads claims and produces reports; it never writes a fact.</li>
+<li><b>Everything recomputable.</b> Any number the contract reports can be reproduced off-chain from the same proofs.</li>
+</ol>
+
+<h2>4. How a fact enters</h2>
+<p>A submitter, called a scout, finds an Ethereum transaction that carries evidence, fetches an Attestcoin proof
+for it, and calls <code>record</code>. Inside that call, and before a single byte of the payload is read, the contract does
+the following.</p>
+<div class="fig">record(Proof[])
+  for each proof:
+    BlockProver 0x..0FD2  verify(chainKey, height, encodedTx, merkleProof, continuityProof)
+        rejected            -> revert ProofRejected(i)
+    BlockProver 0x..0FD2  calculateTxIndex(merkleProof)
+        key = (chainKey, height, txIndex)   duplicate -> skip, never revert
+    EvmV1Decoder          decode sender, receipt status, logs
+        status == 0         -> logs discarded, sender activity still counts
+        emitter != registry -> log ignored
+    AttestorStash 0x..0FD4 getAttestorsCount(chainKey)   stored alongside the fact
+    ChainInfo   0x..0FD3   attested tip, exposed as attestedTip(chainKey)</div>
+<p>Keying by <code>(chainKey, height, txIndex)</code> lets several independent scouts race without double counting, and it
+orders ownership transfers exactly by height, transaction index and log index, so the newest proven transfer wins
+regardless of the order in which proofs arrive.</p>
+<div class="box"><b>Why this is load bearing.</b> Remove Attestcoin and <code>record</code> would have to trust its caller.
+Tinjau would become one more signed off-chain aggregator, which is the thing it exists against. With it, a
+Creditcoin contract checks Ethereum history itself and can lock money on the result.</div>
+
+<h2>5. What the bureau stores</h2>
+<p><code>facts(chainKey, agentId, minAge, minDepth)</code> returns thirteen fields. None is a score.</p>
+<table>
+<tr><th>Field</th><th>Meaning</th></tr>
+<tr><td><code>breadthRaw</code> / <code>breadthGrounded</code> / <code>breadthIndependent</code></td><td>reviewers seen; those whose every index is proven and who clear the age and activity thresholds; those who additionally own no agents</td></tr>
+<tr><td><code>gapCount</code></td><td>reviewers with an unproven index below their highest proven one</td></tr>
+<tr><td><code>negatives</code></td><td>proven negative reviews, net of proven revocations</td></tr>
+<tr><td><code>cloneDensityLB</code>, <code>registrantSiblings</code>, <code>uriSiblings</code>, <code>sameTxSiblings</code></td><td>agents sharing an owner, a registrant, a document URI, or a single minting transaction</td></tr>
+<tr><td><code>firstRegisteredHeight</code>, <code>coveredThrough</code></td><td>first proven registration height, and the newest proven relevant height</td></tr>
+<tr><td><code>minAttestors</code></td><td>the lowest attestor count registered for the source chain at the moment any of this agent's facts was admitted</td></tr>
+<tr><td><code>truncated</code></td><td>the reviewer set exceeded the iteration cap, so the answer is incomplete and consumers must refuse it</td></tr>
+</table>
+<div class="box"><b>Two field names are routinely misread, so we state them plainly.</b> <code>minAttestors</code> is the network
+context at admission, not the set of signers behind a particular proof. <code>coveredThrough</code> is the newest proven
+fact, not a certificate that every block up to the tip was examined.</div>
+
+<h2>6. Turning facts into a price</h2>
+<p><code>AgentHireEscrow</code> is an example consumer, not the product. It reads <code>facts()</code> under the hirer's own
+thresholds and computes a premium, which is the agent's cost of credit and is paid to the agent's owner.</p>
+<div class="fig">coverage    = min(10000, breadthGrounded * 10000 / k)
+cloneFactor = c * 10000 / (c + cloneDensityLB)
+risk        = 10000 - coverage * cloneFactor / 10000
+premium     = baseBps + (maxBps - baseBps) * risk / 10000</div>
+<p>The premium is computed, never configured. A live example: agent 50724 carries a risk of 7,223 basis points,
+which yields a premium of 1,472 basis points, or 14.72%, sitting between the 1% floor and the 20% ceiling.</p>
+<p>A record with holes is not priced at all. If <code>gapCount</code> exceeds zero the escrow reverts with <code>Gated</code>.
+Missing evidence is a gate, never a price, because otherwise an agent could buy its way past its own silence. The
+escrow can also refuse a <code>truncated</code> answer, facts admitted under a thin attestor set (<code>ThinQuorum</code>), and
+facts whose newest proven height is too far behind the attested tip (<code>Stale</code>).</p>
+
+<h2>7. Paying for evidence, in either direction</h2>
+<p><code>CoverageBounty</code> lets anyone put money on a question. <code>fund</code> snapshots a four-part decision vector under the
+funder's thresholds: are there enough verified reviewers, are there no holes, are look-alikes under the limit, and
+is there any negative review. <code>proveAndClaim</code> admits new proofs and pays the full bounty only if one of those four
+predicates changed <b>within that call</b>.</p>
+<p>Evidence that damages an agent pays exactly as much as evidence that helps it. Proof that changes nothing pays
+nothing and costs only gas. This is what makes the bureau self-filling without a subsidy: the people who care about
+an answer fund the evidence that settles it.</p>
+
+<h2>8. The scout</h2>
+<p>GroundedScout is an autonomous agent that decides what is worth proving. It logs four decisions on every cycle.</p>
+<ul>
+<li><b>R1 targeting.</b> Open bounties first, then agents that were requested, then the most reviewed agents of the last seven days.</li>
+<li><b>R2 evidence both ways.</b> Complete records of senior reviewers, and against the agent: negative reviews, revocations, reviewers who own agents, clone siblings, and the highest review index.</li>
+<li><b>R3 timing and cost.</b> Skip what is already admitted; prove only when a bounty covers the gas; batch four proofs per transaction.</li>
+<li><b>R4 acting.</b> Hire through the escrow when the facts clear its own thresholds, otherwise fund a bounty.</li>
+</ul>
+<p>Anyone may run one. The scout has no privilege: it carries proofs and nothing else. A dishonest scout cannot
+insert a review that never happened, because the precompile rejects anything not included in an attested block and
+logs count only from the official registries. All it can do is <b>withhold</b>, and the registry's own per-pair index
+counter exposes that as <code>gapCount</code>. Contributions change completeness; they never change correctness.</p>
+
+<h2>9. Verifiability</h2>
+<p><code>recomputeFromChain()</code> reads every <code>TxAdmitted</code> event from the bureau, locates each source transaction on
+Ethereum by block and index, fetches its proof again from the Attestcoin prover, and replays it through an
+off-chain copy of the contract logic. On 13 September 2026 it replayed all 33 admitted transactions and produced
+facts identical to <code>facts()</code> for agents 22771, 21548, 50283 and 50286. The MCP tool <code>tinjau_verify</code> exposes the
+same check to any agent that can speak the Model Context Protocol.</p>
+
+<h2>10. Reading claims, outside the fact path</h2>
+<p>Review documents assert payments in marketplace-specific formats that no schema covers. A Gemini model reads
+them and proposes <code>(network, txHash)</code> pairs, falling to the next model in a ladder when a quota runs out.
+Deterministic checks then decide: the hash must appear in the document, the chain must be readable by Attestcoin,
+and the prover together with the precompile must confirm inclusion. On agent 50283 the reader found six claimed
+payment transactions and <b>none</b> of them exists on the chain it names.</p>
+<p>That output is a report. It is never written on chain, and no price depends on it.</p>
+
+<h2>11. Results on Creditcoin CC3 testnet</h2>
+<table>
+<tr><th>Contract</th><th>Address</th></tr>
+<tr><td><code>GroundedFacts</code></td><td><code>0x67394eC13E911ab0D3A26132BECa404F26e17a98</code></td></tr>
+<tr><td><code>AgentHireEscrow</code></td><td><code>0xF801a8a01E018f3Bf9a648F4C095a53979282EEA</code></td></tr>
+<tr><td><code>CoverageBounty</code></td><td><code>0xa27f14CD50BF334E7Fb09601cEf203745aADF569</code></td></tr>
+</table>
+<p>All three are verified on Blockscout. 33 Ethereum mainnet source transactions are admitted, the oldest at block
+14,306,215 from 2 March 2022. The scout keeps adding, so that figure is a floor and not a ceiling. The contract
+suite carries 49 tests.</p>
+<h3>Worked outcomes</h3>
+<ul>
+<li><b>Agent 22771.</b> Three reviewers, each active between 97 days and four years before their first review, no gaps, no look-alikes, four attestors at admission. Premium 100 basis points. Hired.</li>
+<li><b>Agent 21548.</b> Bounty #0 of 0.05 tCTC claimed by the scout with the batch that moved the decision, then hired at 100 basis points.</li>
+<li><b>Agent 50283.</b> One reviewer who owns agents, review #97 proven with #1 to #96 unproven, nine clone siblings. Quote 2,000 basis points and <code>hire</code> reverts <code>Gated(1)</code>. No threshold opens it.</li>
+</ul>
+<h3>Precompile cost</h3>
+<table>
+<tr><th>Source height (Ethereum)</th><th>Continuity roots</th><th><code>verify</code> gas</th></tr>
+<tr><td>14,306,215 (2 Mar 2022, oldest admitted)</td><td>786</td><td>506,986</td></tr>
+<tr><td>22,841,017</td><td>984</td><td>631,434</td></tr>
+<tr><td>24,365,879 (agent 22771 registration)</td><td>122</td><td>127,746</td></tr>
+<tr><td>25,489,494</td><td>7</td><td>62,292</td></tr>
+</table>
+<p>Cost tracks the number of continuity roots rather than age, at roughly 55,000 gas plus 580 per root. A complete
+admitted proof, including decoding and storage, costs 0.3 to 0.6 million gas; a 52 KB mass-registration
+transaction carrying ten <code>Registered</code> logs costs 2,999,199.</p>
+<h3>Mainnet readiness</h3>
+<p>Checked read-only on CC3 mainnet: the proof for agent 22771's registration, fetched from the mainnet proof
+builder, returns <code>verify = true</code> from the <code>0x0FD2</code> precompile at the same 127,746 gas. The contract code, the
+registries and the proofs are unchanged; only the chainKey in the constructor differs. Mainnet AttestorStash
+reports seven attestors for Ethereum with a minimum bond of zero.</p>
+
+<h2>12. Trust assumptions</h2>
+<ul>
+<li>Attestcoin moves trust away from RPC providers and indexers and onto Creditcoin's bonded attestor set. It does not remove trust. On mainnet the minimum bond is currently zero, and a consumer that cares can refuse facts admitted under a thin set.</li>
+<li>The precompile is trusted to verify inclusion correctly. Tinjau does not re-implement it.</li>
+<li>The registry addresses are constructor arguments with no admin, so they are fixed at deployment and visible to anyone reading the contract.</li>
+<li>An agent's own registration document is the owner's unverified claim. The interface labels it as such and never mixes it with proven facts.</li>
+</ul>
+
+<h2>13. Limits, stated up front</h2>
+<ul>
+<li><b>Ethereum mainnet only.</b> Sepolia is excluded by design, because a registry entry there costs nothing to mint and admitting it would let anyone fabricate a record for free. Base, where most ERC-8004 activity now lives, is not readable by Attestcoin today.</li>
+<li><b>Admitted evidence with known gaps, never a complete history.</b> Holes below the highest proven index are visible; a newer review that nobody has proven is not.</li>
+<li><b>Clone density is a lower bound.</b> Aged wallets can be bought, and honest multi-agent operators look like clone farms. The contract reports the count and draws no conclusion.</li>
+<li><b>No independent consumer contract on Creditcoin yet.</b> The escrow is a worked example of one.</li>
+<li><b>Evidence Exchange is partly live.</b> The decision-change payout and source-order conflict resolution work today. Batch claim, an adjudication receipt recording the decision before and after with the predicate that flipped, and hire re-pricing inside the same transaction are not built.</li>
+</ul>
+
+<h2>14. What comes next</h2>
+<ol>
+<li>Finish Evidence Exchange: batch claim, the adjudication receipt, and same-transaction re-pricing.</li>
+<li>Consumer contracts beyond our own escrow. Any marketplace, lender or agent can already read <code>facts()</code> through <code>IAgentFacts</code>.</li>
+<li>Additional source chains as Attestcoin reaches them. The registry table is a constructor argument, so no rewrite is required.</li>
+<li>Distribution through the Model Context Protocol, so an agent consults the bureau before it hires rather than after it has paid.</li>
+</ol>
+<p><b>Who pays.</b> The hirer, as a premium on the job, and the premium goes to the agent's owner. That is deliberate:
+it makes a clean, fully proven record an asset its owner has a reason to protect.</p>
+
+<p class="foot">
+Every figure in this document is either an on-chain measurement or a command anyone can rerun. The integration
+summary lists every testnet transaction with its gas at
+<code>ATTESTCOIN_INTEGRATION.md</code>; the evaluation dossier labels each claim as fact or inference at
+<code>docs/evaluation-dossier.md</code>. Live at <a href="https://tinjau.xyz">tinjau.xyz</a>,
+source at <a href="https://github.com/scientivan/Tinjau">github.com/scientivan/Tinjau</a>.
+</p>
+</body></html>

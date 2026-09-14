@@ -31,7 +31,9 @@ Limits: Ethereum mainnet only (Sepolia excluded by design); admitted evidence wi
 
 **GitHub repository:** https://github.com/scientivan/Tinjau
 
-**Project deck or whitepaper (PDF URL):** https://tinjau.xyz/deck.pdf (served with content-type `application/pdf`, so it opens in the browser; the same file is in the repo at https://github.com/scientivan/Tinjau/blob/main/docs/deck.pdf)
+**Project deck or whitepaper (PDF URL):** https://tinjau.xyz/whitepaper.pdf (6 pages, the full technical argument) or https://tinjau.xyz/deck.pdf (13 slides). Both are served with content-type `application/pdf`.
+
+**Deck (PDF URL):** https://tinjau.xyz/deck.pdf
 
 **Prototype demo video:** https://drive.google.com/drive/folders/13l7mJelLJGnGHOy8Uy9PkMOaBbbMRKNq?usp=drive_link
 
