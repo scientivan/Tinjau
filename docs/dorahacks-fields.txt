@@ -41,74 +41,26 @@ AI (infrastructure for AI agents). Secondary: DeFi, since the hiring escrow
 prices risk and holds the money.
 
 
-=== Project Description ===
+=== Project Description (max 960 chars) ===
 
-19,000+ AI agents are registered on ERC-8004 on Ethereum mainnet and already pay
-each other, yet nothing a contract can check says which deserve trust. Read raw,
-the registry misleads: 346 of 367 rated agents had one reviewer, one wallet wrote
-225 reviews, and clone-scale owners made 83% of recent registrations.
+19,000+ AI agents on ERC-8004 hire and pay each other, yet nothing a contract can check says which deserve trust. Read raw it misleads: 346 of 367 rated agents had one reviewer, one wallet wrote 225 reviews, and clone-scale owners made 83% of recent registrations.
 
-Tinjau is a verified background check before money moves, a bureau in
-Creditcoin's sense: it records and does not judge. GroundedFacts admits data only
-through Attestcoin proofs of Ethereum transactions, so a fact enters only after
-the precompile verified it. There is no score. Consumers pass their own
-thresholds and get admitted evidence plus known gaps, and anyone can replay every
-proof from chain data.
+Tinjau is a verified background check before money moves. Its Creditcoin contract admits data only through Attestcoin proofs of Ethereum transactions, so a fact enters only after the precompile verified it. No score: consumers pass their own thresholds, get admitted evidence plus known gaps, and can replay every proof.
 
-AgentHireEscrow prices a hire from those facts and refuses records with holes.
-CoverageBounty pays for evidence that changes a decision, in either direction. An
-autonomous scout proves evidence both ways; a dishonest one can only withhold,
-which the registry's own counter exposes as a gap.
+An escrow prices a hire and refuses records with holes; a bounty pays for evidence that changes a decision, either way. A scout proves both ways, and a dishonest one can only withhold, which shows up as a gap.
 
-Live on CC3 testnet: 33 Ethereum mainnet transactions admitted, back to 2022 and
-still growing; two agents hired at 1%; one gated; a bounty claimed by the scout;
-the same proof verified on CC3 mainnet.
-
-Limits: Ethereum mainnet only; admitted evidence with known gaps, never a
-complete history.
+Live on CC3 testnet: 33 mainnet transactions admitted back to 2022, two hired at 1%, one gated, the same proof verified on CC3 mainnet.
 
 
-=== USC Integration Summary ===
+=== USC Integration Summary (max 960 chars) ===
 
-Every fact in Tinjau enters through USC. GroundedFacts has no admin, no setter
-and no trusted relayer: the only way to change its state is `record`, and every
-proof in that call goes through BlockProver first.
+Every fact enters through USC. GroundedFacts has no admin, no setter and no trusted relayer: the only way to change its state is `record`, and every proof in that call goes through BlockProver first.
 
-Precompiles, called inside the contract:
+BlockProver 0x..0FD2 `verify` runs on each proof before a byte of it is read; a failed proof reverts. `calculateTxIndex` keys each transaction by (chainKey, height, txIndex), so duplicates are skipped and ownership transfers order exactly. AttestorStash 0x..0FD4 reports the attestor count at admission, so the escrow can refuse a thin set. ChainInfo 0x..0FD3 gives the attested tip, so a hirer can refuse stale facts.
 
-- BlockProver 0x...0FD2 `verify`: run on each proof before a byte of it is read.
-  A failed proof reverts with ProofRejected(i).
-- BlockProver `calculateTxIndex`: keys each transaction by (chainKey, height,
-  txIndex), so duplicates are skipped and several scouts can race safely. It also
-  orders ownership transfers exactly, so the newest proven transfer wins whatever
-  order the proofs arrive in.
-- AttestorStash 0x...0FD4 `getAttestorsCount`: read on every admitted proof.
-  facts().minAttestors is the lowest attestor count registered when any of the
-  agent's facts was admitted, and the escrow can refuse a thin set (ThinQuorum).
-  Live: 4 attestors for Ethereum mainnet, 100 CTC bond each.
-- ChainInfo 0x...0FD3: attestedTip() shows how far Creditcoin has attested, so
-  with facts().coveredThrough a hirer can refuse stale facts (Stale).
+Without USC this cannot exist: every fact comes from Ethereum history, which no EVM contract can read, least of all from another chain. `record` would have to trust its caller.
 
-The official EvmV1Decoder from @gluwa/usc-contracts decodes the proven bytes.
-Logs of a reverted source transaction are never used, and a log counts only when
-its emitter is the ERC-8004 registry configured for that chainKey, so a
-look-alike event from any other contract is ignored.
-
-Without USC this product cannot exist. Every fact comes from Ethereum history,
-which no EVM contract can read, least of all from another chain. `record` would
-have to trust its caller, and Tinjau would be one more signed off-chain
-aggregator, which is exactly what ERC-8004 leaves consumers to trust today. With
-USC the contract checks the history itself and can lock money on the result.
-
-Gas on `verify` tracks continuity roots rather than age: 62,292 at 7 roots up to
-631,434 at 984. The same proof returns verify = true on CC3 mainnet at the same
-127,746 gas, so only the chainKey changes. recomputeFromChain() replayed all 33
-admitted transactions on 13 Sep 2026 and produced facts identical to facts(); the
-MCP tool tinjau_verify exposes that check to any agent.
-
-USC moves trust from RPCs and indexers to Creditcoin's bonded attestors; it does
-not remove it. minAttestors is the count registered at admission, not proof
-signers.
+Gas on `verify` tracks continuity roots: 62,292 at 7 roots up to 631,434 at 984. The same proof returns true on CC3 mainnet at identical gas.
 
 Full detail, with every testnet transaction and its gas:
 https://github.com/scientivan/Tinjau/blob/main/ATTESTCOIN_INTEGRATION.md
