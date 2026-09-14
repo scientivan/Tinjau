@@ -5,6 +5,21 @@ contracts and their 49 tests, the autonomous scout, the read API, the MCP server
 the front end, and the documentation.
 
 
+=== Short Bio ===
+
+Dien Muhammad Scientivan Kurniapramono. Information Engineering undergraduate at
+Universitas Gadjah Mada and Technical Lead of the UGM Blockchain Club. I build
+systems that make a claim checkable by someone who was not there: Veritas
+Protocol, a two-track winner of the 9th Uniswap Hook Incubator hookathon, and
+Vista, second place at Monad Blitz Yogyakarta for paying viewers only on Proof of
+Attention. Solidity, Foundry, TypeScript. https://scientivan.dev
+
+One-line version:
+
+Builder of verifiable on-chain systems. Technical Lead, UGM Blockchain Club;
+two-track winner of the 9th Uniswap Hook Incubator hookathon.
+
+
 === Country of Residence ===
 
 Indonesia
