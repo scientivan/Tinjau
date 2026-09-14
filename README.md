@@ -4,6 +4,8 @@ Tinjau tells a contract or an agent, before money moves, whether an AI agent on 
 
 BUIDL CTC 2026 Fall · track AI · Creditcoin CC3 Testnet + Attestcoin Protocol
 
+**Live:** [tinjau.xyz](https://tinjau.xyz) · **Whitepaper:** [whitepaper.pdf](https://tinjau.xyz/whitepaper.pdf) · **Deck:** [deck.pdf](https://tinjau.xyz/deck.pdf)
+
 ## Why a background check, and why Creditcoin
 
 Creditcoin began as a credit history for borrowers that banks cannot see. AI agents are the next borrowers with no readable history. Over 19,000 are registered on ERC-8004, other agents hire and pay them, and nothing a contract can check says which ones deserve trust. Tinjau is the bureau in Creditcoin's sense, not the lender and not the judge: it records proven facts, separates them from the evidence that is still missing, and the party taking the risk sets the price. The hiring escrow is the pricing step; its premium is the agent's cost of credit.
@@ -60,13 +62,14 @@ flowchart LR
 
 ```bash
 pnpm install
-pnpm test:contracts                                  # 41 Foundry tests, real prover txBytes fixtures
+pnpm test:contracts                                  # 49 Foundry tests, real prover txBytes fixtures
 pnpm --filter @tinjau/core test                      # off-chain model = contract on the same fixtures
 cd services/scout
 pnpm scout scout --agents=22771,50283 --maxTargets=2 # dry-run: decisions and proofs, no key needed
 pnpm scout verify 22771 50283 21548                  # recompute facts and compare with the contract
 cd ../../apps/server && pnpm dev                     # read API on :8787 (GET /facts/3/22771)
 cd ../mcp-server && pnpm stdio                       # MCP server over stdio
+cd ../web && pnpm dev                                # frontend on :5173
 ```
 
 Live mode (`--live`) and `scripts/deploy.sh` need `PRIVATE_KEY` in `.env` (see `.env.example`). Deploys use `forge create --broadcast`: forge's script simulation rejects Creditcoin block headers.
@@ -78,10 +81,10 @@ Live mode (`--live`) and `scripts/deploy.sh` need `PRIVATE_KEY` in `.env` (see `
 | `contracts/` | Foundry: `GroundedFacts`, `AgentHireEscrow`, `CoverageBounty`, `IAgentFacts`; tests with real proof fixtures |
 | `packages/core` | chain config, prover client, txBytes decoder, off-chain facts model, contract client, `recomputeFromChain` |
 | `services/scout` | GroundedScout CLI (runs locally; holds the key) |
-| `apps/server` | Hono read API + claim reader (Vercel Functions) |
+| `apps/server` | Hono read API + Gemini claim reader + `/card/:agentId` registration proxy; runs locally, deployable as Vercel Functions (not deployed today) |
 | `apps/mcp-server` | MCP tools (stdio and stateless HTTP) |
-| `apps/web` | frontend (in progress) |
-| `docs/` | evaluation dossier, deck, task tracker, development guide |
+| `apps/web` | frontend, live at [tinjau.xyz](https://tinjau.xyz): marketplace, bounty board, comparison, wallet flows |
+| `docs/` | whitepaper, deck, evaluation dossier, demo script, task tracker, development guide |
 
 ## What was built during the hackathon
 
@@ -99,6 +102,6 @@ All code in this repository was written during BUIDL CTC 2026 Fall. The v3 rebui
 
 ## Evidence Exchange: what is live, what is not
 
-The core of the counter-evidence market is deployed: `CoverageBounty.fund` opens an evidence request with policy thresholds, an expiry and a bounty; `decisionOf` is the four-predicate decision vector; `proveAndClaim` pays only if the proofs submitted in that call flip a predicate, in either direction (live: the scout's claim `0xfd342f65…cc79` on agent 21548, followed by the hire from the same facts). Ownership conflicts already resolve by source order `(height, txIndex, logIndex)`, whatever order proofs arrive in (tested, not yet shown live). Not built: a `proveBatchAndClaim` path on top of `recordBatch`, an adjudication receipt that records the decision before, the decision after and the predicate that flipped, and re-pricing the hire inside the same transaction as the claim.
+The core of the counter-evidence market is deployed: `CoverageBounty.fund` opens an evidence request with policy thresholds, an expiry and a bounty; `decisionOf` is the four-predicate decision vector; `proveAndClaim` pays only if the proofs submitted in that call flip a predicate, in either direction (live: the scout's claim `0x8a32b470…d68d` on agent 21548, followed by the hire from the same facts). Ownership conflicts already resolve by source order `(height, txIndex, logIndex)`, whatever order proofs arrive in (tested, not yet shown live). Not built: a `proveBatchAndClaim` path on top of `recordBatch`, an adjudication receipt that records the decision before, the decision after and the predicate that flipped, and re-pricing the hire inside the same transaction as the claim.
 
 License: MIT.
